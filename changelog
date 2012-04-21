@@ -1,0 +1,20 @@
+Première partie : recensement des promesses du président
+Données :
+  - une intervention sera constituée de :
+    * un nom pour s'y référer (par exemple : "des paroles et des actes du xx/04/2012")
+    * un type (par exemple : "interview télévisée")
+    * plusieurs sources où retrouver cette intervention (vidéo, retranscription...)
+  - une source sera constituée de :
+    * un type (vidéo, article, image...)
+    * un lien pour y accéder
+  - un engagement est reliée à 1 ou n interventions
+    * pour chaque intervention à laquelle l'engagement est relié on aura :
+      -> le texte original prononcé par le candidat
+      -> la référence précise pour accéder directement à l'information (ex: "minute 23" ou "2ème paragraphe 3ème page")
+    * pour chaque engagement il sera renseigné :
+      -> sur quoi porte l'engagement
+      -> la catégorie dont fait partie l'engagement (ex: "économie", "écologie"...)
+
+Deuxième partie : comptabilisation et mise en relation des actions du président
+
+

@@ -1,0 +1,13 @@
+Ce projet a pour but de centraliser les promesses de campagne du futur président.
+
+L'objectif est donc d'extraire toutes les propositions et promesses du président à partir de l'ensemble de ses interventions de campagne (programme, site officiel, meetings, interview, tracts, comptes officiels sur les réseaux sociaux...).
+Centraliser ces informations de manière claire, avec les références précises pour chacune pourra permettre premièrement d'observer la cohérence globale du discours du président lors de sa campagne et de savoir précisément ce à quoi il s'est engagé (hors de son programme notamment).
+
+Par la suite, il possibilité d'y ajouter les actions législatives entreprises pourrait permettre de faire le rapprochement entre ses promesses et son action.
+
+L'ensemble des données récoltées seront accessibles et réutilisables sans contraintes.
+
+Bien sûr, la récoltes de ses informations débutera après le second tour. Je me fixe donc deux semaines pour réaliser le site qui permettra la récupération, l'affichage et la redistribution de l'ensemble de ces informations.
+Pour plus d'information contactez via twitter : @loicknuchel
+
+La liste précise des fonctionnalités prévues est disponible dans le fichier changelog.
