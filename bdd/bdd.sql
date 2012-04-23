@@ -26,6 +26,7 @@ CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_intervention` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `interventionType` INT NULL ,
   `name` VARCHAR(45) NOT NULL ,
+  `date` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_intervention_interventionType` (`interventionType` ASC) ,
   CONSTRAINT `fk_intervention_interventionType`
@@ -44,6 +45,7 @@ DROP TABLE IF EXISTS `lkws_politique`.`LPAD_engagementCategory` ;
 CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_engagementCategory` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
+  `ordre` INT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -113,6 +115,7 @@ CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_source` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `intervention` INT NULL ,
   `sourceType` INT NULL ,
+  `title` VARCHAR(45) NOT NULL ,
   `link` TEXT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_source_intervention` (`intervention` ASC) ,
@@ -132,6 +135,14 @@ ENGINE = InnoDB;
 USE `lkws_politique`;
 
 -- -----------------------------------------------------
+-- Data for table `lkws_politique`.`LPAD_intervention`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+INSERT INTO `LPAD_intervention` (`id`, `interventionType`, `name`, `date`) VALUES (1, 2, 'Des paroles et des actes', '2012-04-10 20:00:00');
+
+COMMIT;
+
+-- -----------------------------------------------------
 -- Data for table `lkws_politique`.`LPAD_interventionType`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
@@ -139,6 +150,51 @@ INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (1, 'Interview télév
 INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (2, 'Meeting');
 INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (3, 'Programme officel');
 INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (4, 'tract');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `lkws_politique`.`LPAD_engagement`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+INSERT INTO `LPAD_engagement` (`id`, `propositionCategory`, `content`) VALUES (1, 4, 'Droit à l\'avortement');
+INSERT INTO `LPAD_engagement` (`id`, `propositionCategory`, `content`) VALUES (2, 2, 'réformer les institutions');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `lkws_politique`.`LPAD_interventionHasEngagement`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+INSERT INTO `LPAD_interventionHasEngagement` (`interventionId`, `engagementId`, `originalText`, `interventionPos`) VALUES (1, 1, 'Je m\'engage à donner le droit d\'avorter à toutes les demmes', 'début du discours');
+INSERT INTO `LPAD_interventionHasEngagement` (`interventionId`, `engagementId`, `originalText`, `interventionPos`) VALUES (1, 2, 'Notre pays doit immédiatement réformer ses pratiques', 'milieu du discours');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `lkws_politique`.`LPAD_engagementCategory`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+INSERT INTO `LPAD_engagementCategory` (`id`, `name`, `ordre`) VALUES (1, 'Economie et Emploi', 1);
+INSERT INTO `LPAD_engagementCategory` (`id`, `name`, `ordre`) VALUES (2, 'Education et Recherche', 2);
+INSERT INTO `LPAD_engagementCategory` (`id`, `name`, `ordre`) VALUES (3, 'Europe', 3);
+INSERT INTO `LPAD_engagementCategory` (`id`, `name`, `ordre`) VALUES (4, 'Environnement et agriculture', 4);
+INSERT INTO `LPAD_engagementCategory` (`id`, `name`, `ordre`) VALUES (5, 'Services publics et Territoires', 5);
+INSERT INTO `LPAD_engagementCategory` (`id`, `name`, `ordre`) VALUES (6, 'Constitution et Institutions', 6);
+INSERT INTO `LPAD_engagementCategory` (`id`, `name`, `ordre`) VALUES (7, 'Politique Etrangère', 7);
+INSERT INTO `LPAD_engagementCategory` (`id`, `name`, `ordre`) VALUES (8, 'Numérique, Culture et Médias', 8);
+INSERT INTO `LPAD_engagementCategory` (`id`, `name`, `ordre`) VALUES (9, 'Justice, Sécurité et Défense', 9);
+INSERT INTO `LPAD_engagementCategory` (`id`, `name`, `ordre`) VALUES (10, 'Société, Immigration et Famille', 10);
+INSERT INTO `LPAD_engagementCategory` (`id`, `name`, `ordre`) VALUES (11, 'Solidarité, Santé et Logement', 11);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `lkws_politique`.`LPAD_source`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`) VALUES (1, 1, 2, 'dailymotion', 'premier lien');
+INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`) VALUES (2, 1, 4, 'france 2', 'deuxièmes lien');
 
 COMMIT;
 
