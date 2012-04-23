@@ -1,0 +1,1 @@
+<?phpfunction createFooter(){  return '  <script src="js/libs/jquery-1.7.2.js"></script>  <script src="js/libs/bootstrap-2.0.2.js"></script>  ';}?>
