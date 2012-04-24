@@ -8,3 +8,12 @@
 .container {
   //background: #ccc;
 }
+
+td.fix {
+  padding: 0px;
+}
+
+td.fix .nav {
+  margin: 0px;
+}
+

@@ -31,7 +31,14 @@ include_once 'server/provider/dataProvider.php';
               <label class="control-label" for="intervention">Nom de l'intervention :</label>
               <div class="controls">
                 <input type="text" id="intervention" name="intervention" placeholder="nom de l'intervention" />
-                <span class="help-inline">Ex: Des paroles et des actes du xx/04/2012</span>
+                <span class="help-inline">Ex: Des paroles et des actes</span>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="interventionDate">Date de l'intervention :</label>
+              <div class="controls">
+                <input type="date" id="interventionDate" name="interventionDate" placeholder="date de l'intervention" />
+                <span class="help-inline">Ex: 2012-04-10</span>
               </div>
             </div>
             <div class="control-group">
