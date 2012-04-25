@@ -1,6 +1,20 @@
 <?php
 include_once 'server/dao/connectDb.php';
 
+function dateFormat($dateTime){
+  $dateArray = explode(" ", $dateTime);
+  $date = $dateArray[0];
+  $time = $dateArray[1];
+  $dateArray = explode("-", $date);
+  $annee = $dateArray[0];
+  $mois = $dateArray[1];
+  $jour = $dateArray[2];
+  $timeArray = explode(":", $time);
+  $heure = $timeArray[0];
+  $minute = $timeArray[1];
+  $seconde = $timeArray[2];
+  return $jour.'/'.$mois.'/'.$annee;
+}
 
 function prefix(){
 	return "LPAD_";
@@ -52,11 +66,15 @@ function daoGetInterventionTypes(){
 function daoGetInterventions(){
   dbConnect(getStatus());
   
-  $req = "SELECT i.id, it.name as type, i.name, i.date, s.title as sourceName, s.link as sourceLink, st.name as sourceType
+  $req = "SELECT i.id, it.name as type, i.name, i.date, IF(ihe.interventionId IS NOT NULL, count(s.id), 0) as engagementNb, s.id as sourceId, s.title as sourceName, s.link as sourceLink, st.name as sourceType
 FROM ".prefix()."intervention i
 LEFT OUTER JOIN ".prefix()."interventionType it ON it.id = i.interventionType
 LEFT OUTER JOIN ".prefix()."source s ON s.intervention = i.id
-LEFT OUTER JOIN ".prefix()."sourceType st ON st.id = s.sourceType;";
+LEFT OUTER JOIN ".prefix()."sourceType st ON st.id = s.sourceType
+LEFT OUTER JOIN ".prefix()."interventionHasEngagement ihe ON ihe.interventionId=i.id
+GROUP BY s.id
+ORDER BY i.date";
+
   $result = mysql_query($req);
 	$ret = array();
 	$index = -1;
@@ -70,15 +88,18 @@ LEFT OUTER JOIN ".prefix()."sourceType st ON st.id = s.sourceType;";
       $ret[$index]["id"] = decode($data['id']);
       $ret[$index]["type"] = decode($data['type']);
       $ret[$index]["name"] = decode($data['name']);
-      $ret[$index]["date"] = decode($data['date']);
+      $ret[$index]["date"] = dateFormat(decode($data['date']));
+      $ret[$index]["engagementNb"] = decode($data['engagementNb']);
       $ret[$index]["sources"][$srcIndex]["name"] = decode($data['sourceName']);
       $ret[$index]["sources"][$srcIndex]["link"] = decode($data['sourceLink']);
       $ret[$index]["sources"][$srcIndex]["type"] = decode($data['sourceType']);
+      $ret[$index]["sourcesNb"] = $srcIndex+1;
     } else {
       $srcIndex++;
       $ret[$index]["sources"][$srcIndex]["name"] = decode($data['sourceName']);
       $ret[$index]["sources"][$srcIndex]["link"] = decode($data['sourceLink']);
       $ret[$index]["sources"][$srcIndex]["type"] = decode($data['sourceType']);
+      $ret[$index]["sourcesNb"] = $srcIndex+1;
     }
 	}
   

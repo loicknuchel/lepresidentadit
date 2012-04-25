@@ -139,6 +139,8 @@ USE `lkws_politique`;
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
 INSERT INTO `LPAD_intervention` (`id`, `interventionType`, `name`, `date`) VALUES (1, 2, 'Des paroles et des actes', '2012-04-10 20:00:00');
+INSERT INTO `LPAD_intervention` (`id`, `interventionType`, `name`, `date`) VALUES (2, 1, 'Soir du premier tour', '2012-04-22 20:00:00');
+INSERT INTO `LPAD_intervention` (`id`, `interventionType`, `name`, `date`) VALUES (3, 3, 'Premier meeting', '2012-03-29 18:30:00');
 
 COMMIT;
 
@@ -193,8 +195,10 @@ COMMIT;
 -- Data for table `lkws_politique`.`LPAD_source`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`) VALUES (1, 1, 2, 'dailymotion', 'premier lien');
-INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`) VALUES (2, 1, 4, 'france 2', 'deuxièmes lien');
+INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`) VALUES (1, 1, 2, 'dailymotion', 'http://twitter.github.com/bootstrap/javascript.html#modals');
+INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`) VALUES (2, 1, 4, 'france 2', 'https://github.com/loicknuchel/lepresidentadit');
+INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`) VALUES (3, 2, 1, 'youtube', 'http://www.youtube.com/user/PomfEtThud');
+INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`) VALUES (4, 3, 3, 'test', 'https://twitter.com/#!/');
 
 COMMIT;
 

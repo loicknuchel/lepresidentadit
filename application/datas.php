@@ -24,26 +24,28 @@ include_once 'server/provider/dataProvider.php';
         
       </div>
       <div class="span8">
-        <table class="table table-striped">
+        <table class="table table-striped myTable">
           <thead>
             <tr>
               <th>#</th>
-              <th>type</th>
               <th>intervention</th>
-              <th>date</th>
+              <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             <?php
+              $count = 1;
               $interventions = getInterventions();
               foreach($interventions as $key => $intervention){
                 echo '<tr>
-                  <td>
-                    '.$intervention['id'].'
+                  <td>'.$count.' </td>
+                  <td><span class="js-tooltip" title="'.$intervention['type'].' du '.$intervention['date'].'">'.$intervention['name'].'</span></td>
+                  <td class="fix">
                     <div class="modal hide fade" id="modalSource'.$intervention['id'].'">
                       <div class="modal-header">
                         <a class="close" data-dismiss="modal">×</a>
-                        <h3>Modal header</h3>
+                        <h3>Ajouter une source à "'.$intervention['name'].'"</h3>
                       </div>
                       <div class="modal-body">
                         <p>One fine body…</p>
@@ -53,14 +55,9 @@ include_once 'server/provider/dataProvider.php';
                         <a href="#" class="btn btn-primary">Save changes</a>
                       </div>
                     </div>
-                  </td>
-                  <td>'.$intervention['type'].'</td>
-                  <td>'.$intervention['name'].'</td>
-                  <td>'.$intervention['date'].'</td>
-                  <td class="fix">
                     <ul class="nav nav-pills">
                       <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sources <b class="caret"></b></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sources ('.$intervention['sourcesNb'].') <b class="caret"></b></a>
                         <ul class="dropdown-menu">'; 
                         foreach($intervention['sources'] as $sourceKey => $source){
                           echo '<li><a href="'.$source['link'].'">'.$source['name'].' ('.$source['type'].')</a></li>';
@@ -74,7 +71,9 @@ include_once 'server/provider/dataProvider.php';
                       </li>
                     </ul>
                   </td>
+                  <td class="fix"><a href="" class="btn">'.$intervention['engagementNb'].' engagement'.($intervention['engagementNb'] > 1 ? 's' : '').'</a></td>
                 </tr>';
+                $count++;
               }
             ?>
           </tbody>
