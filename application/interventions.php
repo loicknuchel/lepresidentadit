@@ -10,25 +10,25 @@ include_once 'server/provider/dataProvider.php';
 	<?php echo createHead("Le président à dit"); ?>
 </head>
 <body>
-  <?php echo createHeader("donnees"); ?>
+  <?php echo createHeader("interventions"); ?>
 	
   <div class="container">
   
     <div class="row">
       <div class="span12">
-        <h1>Données</h1>
+        <h1>Interventions</h1> <a href="" class="btn">Nouvelle intervention</a>
       </div>
     </div>
+    <br/>
     <div class="row">
-      <div class="span4">
-        
-      </div>
-      <div class="span8">
+      <div class="span12">
         <table class="table table-striped myTable">
           <thead>
             <tr>
               <th>#</th>
+              <th>type</th>
               <th>intervention</th>
+              <th>date</th>
               <th></th>
               <th></th>
             </tr>
@@ -39,8 +39,10 @@ include_once 'server/provider/dataProvider.php';
               $interventions = getInterventions();
               foreach($interventions as $key => $intervention){
                 echo '<tr>
-                  <td>'.$count.' </td>
+                  <td>'.$count.'</td>
+                  <td>'.$intervention['type'].'</td>
                   <td><span class="js-tooltip" title="'.$intervention['type'].' du '.$intervention['date'].'">'.$intervention['name'].'</span></td>
+                  <td>'.$intervention['date'].' à '.$intervention['heure'].'</td>
                   <td class="fix">
                     <div class="modal hide fade" id="modalSource'.$intervention['id'].'">
                       <div class="modal-header">

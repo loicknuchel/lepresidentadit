@@ -13,7 +13,8 @@ function createHeader($page){
         <div class="nav-collapse">
           <ul class="nav">
             <li'.($page == 'home' ? ' class="active"' : '').'><a href="./">Home</a></li>
-            <li'.($page == 'donnees' ? ' class="active"' : '').'><a href="datas.php">Engagements</a></li>
+            <li'.($page == 'interventions' ? ' class="active"' : '').'><a href="interventions.php">Interventions</a></li>
+            <li'.($page == 'engagements' ? ' class="active"' : '').'><a href="engagements.php">Engagements</a></li>
             <li'.($page == 'participer' ? ' class="active"' : '').'><a href="participer.php">Participer</a></li>
             <li'.($page == 'about' ? ' class="active"' : '').'><a href="#">About</a></li>
             <li'.($page == 'contact' ? ' class="active"' : '').'><a href="#">Contact</a></li>

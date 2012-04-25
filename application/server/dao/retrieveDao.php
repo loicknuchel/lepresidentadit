@@ -4,16 +4,21 @@ include_once 'server/dao/connectDb.php';
 function dateFormat($dateTime){
   $dateArray = explode(" ", $dateTime);
   $date = $dateArray[0];
-  $time = $dateArray[1];
   $dateArray = explode("-", $date);
   $annee = $dateArray[0];
   $mois = $dateArray[1];
   $jour = $dateArray[2];
+  return $jour.'/'.$mois.'/'.$annee;
+}
+
+function heureFormat($dateTime){
+  $dateArray = explode(" ", $dateTime);
+  $time = $dateArray[1];
   $timeArray = explode(":", $time);
   $heure = $timeArray[0];
   $minute = $timeArray[1];
   $seconde = $timeArray[2];
-  return $jour.'/'.$mois.'/'.$annee;
+  return $heure.'h'.$minute;
 }
 
 function prefix(){
@@ -89,6 +94,7 @@ ORDER BY i.date";
       $ret[$index]["type"] = decode($data['type']);
       $ret[$index]["name"] = decode($data['name']);
       $ret[$index]["date"] = dateFormat(decode($data['date']));
+      $ret[$index]["heure"] = heureFormat(decode($data['date']));
       $ret[$index]["engagementNb"] = decode($data['engagementNb']);
       $ret[$index]["sources"][$srcIndex]["name"] = decode($data['sourceName']);
       $ret[$index]["sources"][$srcIndex]["link"] = decode($data['sourceLink']);
