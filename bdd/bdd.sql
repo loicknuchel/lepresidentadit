@@ -57,12 +57,12 @@ DROP TABLE IF EXISTS `lkws_politique`.`LPAD_engagement` ;
 
 CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_engagement` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `propositionCategory` INT NULL ,
+  `engagementCategory` INT NULL ,
   `content` TEXT NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_proposition_propositionCategory` (`propositionCategory` ASC) ,
+  INDEX `fk_proposition_propositionCategory` (`engagementCategory` ASC) ,
   CONSTRAINT `fk_proposition_propositionCategory`
-    FOREIGN KEY (`propositionCategory` )
+    FOREIGN KEY (`engagementCategory` )
     REFERENCES `lkws_politique`.`LPAD_engagementCategory` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -79,6 +79,7 @@ CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_interventionHasEngagement` (
   `engagementId` INT NOT NULL ,
   `originalText` TEXT NOT NULL ,
   `interventionPos` VARCHAR(45) NULL ,
+  `specificLink` TEXT NULL ,
   PRIMARY KEY (`interventionId`, `engagementId`) ,
   INDEX `fk_intervention_has_proposition_intervention` (`interventionId` ASC) ,
   INDEX `fk_intervention_has_proposition_proposition` (`engagementId` ASC) ,
@@ -152,6 +153,7 @@ INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (1, 'Interview télév
 INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (2, 'Meeting');
 INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (3, 'Programme officel');
 INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (4, 'tract');
+INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (5, 'twitter officiel');
 
 COMMIT;
 
@@ -159,8 +161,8 @@ COMMIT;
 -- Data for table `lkws_politique`.`LPAD_engagement`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO `LPAD_engagement` (`id`, `propositionCategory`, `content`) VALUES (1, 4, 'Droit à l\'avortement');
-INSERT INTO `LPAD_engagement` (`id`, `propositionCategory`, `content`) VALUES (2, 2, 'réformer les institutions');
+INSERT INTO `LPAD_engagement` (`id`, `engagementCategory`, `content`) VALUES (1, 4, 'Droit à l\'avortement');
+INSERT INTO `LPAD_engagement` (`id`, `engagementCategory`, `content`) VALUES (2, 2, 'réformer les institutions');
 
 COMMIT;
 
@@ -168,8 +170,9 @@ COMMIT;
 -- Data for table `lkws_politique`.`LPAD_interventionHasEngagement`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO `LPAD_interventionHasEngagement` (`interventionId`, `engagementId`, `originalText`, `interventionPos`) VALUES (1, 1, 'Je m\'engage à donner le droit d\'avorter à toutes les demmes', 'début du discours');
-INSERT INTO `LPAD_interventionHasEngagement` (`interventionId`, `engagementId`, `originalText`, `interventionPos`) VALUES (1, 2, 'Notre pays doit immédiatement réformer ses pratiques', 'milieu du discours');
+INSERT INTO `LPAD_interventionHasEngagement` (`interventionId`, `engagementId`, `originalText`, `interventionPos`, `specificLink`) VALUES (1, 1, 'Je m\'engage à donner le droit d\'avorter à toutes les demmes', 'début du discours', NULL);
+INSERT INTO `LPAD_interventionHasEngagement` (`interventionId`, `engagementId`, `originalText`, `interventionPos`, `specificLink`) VALUES (1, 2, 'Notre pays doit immédiatement réformer ses pratiques', 'milieu du discours', NULL);
+INSERT INTO `LPAD_interventionHasEngagement` (`interventionId`, `engagementId`, `originalText`, `interventionPos`, `specificLink`) VALUES (2, 1, 'Il faut que les femmes puissent avorter', 'à 00:23:04', 'https://twitter.com/#!/');
 
 COMMIT;
 

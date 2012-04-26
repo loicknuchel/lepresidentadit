@@ -11,8 +11,16 @@ function getInterventionTypes(){
   return daoGetInterventionTypes();
 }
 
+function getEngagementCategory(){
+  return daoGetEngagementCategory();
+}
+
 function getInterventions(){
   return daoGetInterventions();
+}
+
+function getEngagements(){
+  return daoGetEngagements();
 }
 
 ?>
