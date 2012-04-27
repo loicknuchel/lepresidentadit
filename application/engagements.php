@@ -80,7 +80,7 @@ include_once 'server/provider/dataProvider.php';
                   <td>'.$count.'</td>
                   <td>'.$engagement['category'].'</td>
                   <td>'.$engagement['content'].'</td>
-                  <td class="fix"><a href="" class="btn">'.$engagement['interventionsNb'].' intervention'.($engagement['interventionsNb'] > 1 ? 's' : '').'</a></td>
+                  <td><a href="" class="btn">'.$engagement['interventionsNb'].' intervention'.($engagement['interventionsNb'] > 1 ? 's' : '').'</a></td>
                 </tr>';
                 $count++;
               }

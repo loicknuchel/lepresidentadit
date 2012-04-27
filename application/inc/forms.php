@@ -70,8 +70,8 @@ function newEngagementInterventionForm(){
           </div>';
 }
 
-function addEngagementForm($engagementCategories, $interventionId){
-  return '<div class="control-group">
+function addEngagementForm($engagements, $engagementCategories, $interventionId){
+  $form = '<div class="control-group">
             <label class="control-label" for="engagementCategory">Catégorie :</label>
             <div class="controls">
               <div class="input-append">
@@ -87,16 +87,28 @@ function addEngagementForm($engagementCategories, $interventionId){
             <div class="tab-content">
               <div class="tab-pane active" id="linkEngagement'.$interventionId.'">
                 <p>
-                  I\'m in Section 1.
+                  <select name="engagementRef">
+                    <option> -- Engagements existant</oprion>';
+                  foreach($engagements as $key => $engagement){
+                    $form .= '<option value="'.$engagement['id'].'">'.$engagement['content'].'</option>';
+                  }
+                $form .= '
+                  </select>
                 </p>
               </div>
               <div class="tab-pane" id="createEngagement'.$interventionId.'">
                 <p>
-                  Howdy, I\'m in Section 2.
+                  <div class="control-group">
+                    <label class="control-label" for="engagementDesc">Description de l\'engagement :</label>
+                    <div class="controls">
+                      <textarea class="input-xlarge" id="engagementDesc" name="engagementDesc" rows="3"></textarea>
+                    </div>
+                  </div>
                 </p>
               </div>
             </div>
           </div>';
+  return $form;
 }
 
 // private

@@ -1,39 +1,6 @@
 <?php
 include_once 'server/dao/connectDb.php';
 
-function dateFormat($dateTime){
-  $dateArray = explode(" ", $dateTime);
-  $date = $dateArray[0];
-  $dateArray = explode("-", $date);
-  $annee = $dateArray[0];
-  $mois = $dateArray[1];
-  $jour = $dateArray[2];
-  return $jour.'/'.$mois.'/'.$annee;
-}
-
-function heureFormat($dateTime){
-  $dateArray = explode(" ", $dateTime);
-  $time = $dateArray[1];
-  $timeArray = explode(":", $time);
-  $heure = $timeArray[0];
-  $minute = $timeArray[1];
-  $seconde = $timeArray[2];
-  return $heure.'h'.$minute;
-}
-
-function prefix(){
-	return "LPAD_";
-}
-function encode($string){
-	return $string;
-	//return utf8_decode($string);
-	//return iconv("UTF-8", "ISO-8859-1//TRANSLIT", $string);
-}
-function decode($string){
-	//return $string;
-	return utf8_encode($string);
-}
-
 function daoGetSourceTypes(){
   dbConnect(getStatus());
   

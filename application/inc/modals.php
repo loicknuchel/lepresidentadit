@@ -3,7 +3,7 @@ include_once 'inc/forms.php';
 
 function newInterventionModal($id, $interventionTypes, $sourceTypes){
   return '<div class="modal hide fade" id="'.$id.'">
-          <form class="form-horizontal" method="POST" action="" style="margin: 0px;">
+          <form class="form-horizontal" method="POST" action="">
             <div class="modal-header">
               <a class="close" data-dismiss="modal">×</a>
               <h3>Nouvelle intervention</h3>
@@ -30,7 +30,7 @@ function newInterventionModal($id, $interventionTypes, $sourceTypes){
 
 function newSourceModal($id, $sourceTypes, $interventionId, $interventionName){
   return '<div class="modal hide fade" id="'.$id.'">
-            <form class="form-horizontal" method="POST" action="" style="margin: 0px;">
+            <form class="form-horizontal" method="POST" action="">
               <div class="modal-header">
                 <a class="close" data-dismiss="modal">×</a>
                 <h3>Ajouter une source à "'.$interventionName.'"</h3>
@@ -51,9 +51,9 @@ function newSourceModal($id, $sourceTypes, $interventionId, $interventionName){
           </div>';
 }
 
-function newEngagementModal($id, $engagementCategories, $interventionId, $interventionName){
+function newEngagementModal($id, $engagements, $engagementCategories, $interventionId, $interventionName){
   return '<div class="modal hide fade" id="'.$id.'">
-            <form class="form-horizontal" method="POST" action="" style="margin: 0px;">
+            <form class="form-horizontal" method="POST" action="">
               <div class="modal-header">
                 <a class="close" data-dismiss="modal">×</a>
                 <h3>Ajouter un engagement à "'.$interventionName.'"</h3>
@@ -66,7 +66,7 @@ function newEngagementModal($id, $engagementCategories, $interventionId, $interv
                   </fieldset>
                   
                   <fieldset>
-                    '.addEngagementForm($engagementCategories, $interventionId).'
+                    '.addEngagementForm($engagements, $engagementCategories, $interventionId).'
                   </fieldset>
                 </p>
               </div>

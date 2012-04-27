@@ -5,19 +5,10 @@
   padding: 5px;
 }
 
-.container {
-  //background: #ccc;
-}
-
 table.myTable tr th, table.myTable tr td {
   vertical-align: middle !important;
 }
 
-td.fix {
-  white-space: nowrap;
-}
-
-td.fix > .nav, td.fix > a {
+.modal form {
   margin: 0px;
 }
-

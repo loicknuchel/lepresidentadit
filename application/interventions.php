@@ -3,7 +3,10 @@ include_once 'inc/head.php';
 include_once 'inc/header.php';
 include_once 'inc/modals.php';
 include_once 'inc/footer.php';
+include_once 'server/requestDispatcher.php';
 include_once 'server/provider/dataProvider.php';
+
+$res = dispatchRequest($_POST, $_GET);
 
 $interventionTypes = getInterventionTypes();
 $sourceTypes = getSourceTypes();
@@ -21,7 +24,7 @@ $engagements = getEngagements();
   <?php echo createHeader("interventions"); ?>
 	
   <div class="container">
-  
+    
     <div class="row">
       <div class="span12">
         <h1>Interventions</h1>
@@ -52,7 +55,7 @@ $engagements = getEngagements();
                   <td>'.$intervention['type'].'</td>
                   <td><span class="js-tooltip" title="'.$intervention['type'].' du '.$intervention['date'].'">'.$intervention['name'].'</span></td>
                   <td>'.$intervention['date'].' à '.$intervention['heure'].'</td>
-                  <td class="fix">
+                  <td>
                     '.newSourceModal('modalSource'.$intervention['id'], $sourceTypes, $intervention['id'], $intervention['name']).'
                     <div class="btn-group">
                       <button class="btn" data-toggle="dropdown">'.($intervention['sourcesNb'] == 0 ? "Pas de sources" : $intervention['sourcesNb'].' source'.($intervention['sourcesNb'] > 1 ? 's' : '')).'</button>
@@ -83,8 +86,8 @@ $engagements = getEngagements();
                       </li>
                     </ul>-->
                   </td>
-                  <td class="fix">
-                    '.newEngagementModal('modalEngagement'.$intervention['id'], $engagementCategories, $intervention['id'], $intervention['name']).'
+                  <td>
+                    '.newEngagementModal('modalEngagement'.$intervention['id'], $engagements, $engagementCategories, $intervention['id'], $intervention['name']).'
                     <div class="btn-group">
                       <button class="btn">'.($intervention['engagementNb'] == 0 ? "Pas d'engagements" : $intervention['engagementNb'].' engagement'.($intervention['engagementNb'] > 1 ? 's' : '')).'</button>
                       <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
@@ -103,7 +106,9 @@ $engagements = getEngagements();
         </table>
       </div>
     </div>
-    
+    <pre>
+      <?php print_r($engagements); ?>
+    </pre>
     
     
   </div>

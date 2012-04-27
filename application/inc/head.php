@@ -8,6 +8,7 @@ function createHead($title){
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<link rel="stylesheet" href="css/libs/bootstrap/css/bootstrap-2.0.2.css">
+	<link rel="stylesheet" href="css/libs/bootstrap/css/bootstrap_override.css">
 	<link rel="stylesheet" href="css/styles.css">
   ';
 }
