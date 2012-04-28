@@ -6,7 +6,7 @@ include_once 'inc/footer.php';
 include_once 'server/requestDispatcher.php';
 include_once 'server/provider/dataProvider.php';
 
-$res = dispatchRequest($_POST, $_GET);
+$res = dispatchRequest($_POST, $_GET, $errorMessage);
 
 $interventionTypes = getInterventionTypes();
 $sourceTypes = getSourceTypes();
@@ -106,10 +106,6 @@ $engagements = getEngagements();
         </table>
       </div>
     </div>
-    <pre>
-      <?php print_r($engagements); ?>
-    </pre>
-    
     
   </div>
     

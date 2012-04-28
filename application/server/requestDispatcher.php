@@ -3,7 +3,7 @@ include_once 'server/utils/stringSecure.php';
 include_once 'server/utils/stringUtils.php';
 include_once 'server/provider/dataProvider.php';
 
-function dispatchRequest($POST, $GET){
+function dispatchRequest($POST, $GET, &$errorMessage){
   foreach($POST as $key => $value){
     $POST[$key] = safe_string($value);
   }
@@ -11,11 +11,11 @@ function dispatchRequest($POST, $GET){
     $GET[$key] = safe_string($value);
   }
   
-  if(count($POST) == 4 && checkNewSource($POST)){
+  if(count($POST) == 4 && checkNewSource($POST, $errorMessage)){
     return true;
-  } else if(count($POST) == 6 && checkNewIntervention($POST)){
+  } else if(count($POST) == 6 && checkNewIntervention($POST, $errorMessage)){
     return true;
-  } else if(count($POST) == 7 && checkNewEngagement($POST)){
+  } else if(count($POST) == 7 && checkNewEngagement($POST, $errorMessage)){
     return true;
   }
   return false;
@@ -23,30 +23,36 @@ function dispatchRequest($POST, $GET){
 
 // private
     // TODO : coder is_url, is_date et is_datetime !!!
-function checkNewIntervention($req){
+function checkNewIntervention($req, &$errorMessage){
   if(isset($req['intervention']) && isset($req['interventionDate']) && isset($req['interventionType']) && isset($req['sourceName']) && isset($req['sourceLink']) && isset($req['sourceType'])){
     if(!empty($req['intervention']) && is_date($req['interventionDate']) && is_id($req['interventionType']) && !empty($req['sourceName']) && is_url($req['sourceLink']) && is_id($req['sourceType'])){
-      addIntervention($req['intervention'], $req['interventionDate'], $req['interventionType'], $req['sourceName'], $req['sourceLink'], $req['sourceType']);
+      $errorMessage = addIntervention($req['intervention'], $req['interventionDate'], $req['interventionType'], $req['sourceName'], $req['sourceLink'], $req['sourceType']);
+    } else {
+      $errorMessage = "Some datas are incorrect";
     }
     return true;
   }
   return false;
 }
 
-function checkNewSource($req){
+function checkNewSource($req, &$errorMessage){
   if(isset($req['interventionId']) && isset($req['sourceName']) && isset($req['sourceLink']) && isset($req['sourceType'])){
     if(is_id($req['interventionId']) && !empty($req['sourceName']) && is_url($req['sourceLink']) && is_id($req['sourceType'])){
-      addIntervention($req['interventionId'], $req['sourceName'], $req['sourceLink'], $req['sourceType']);
+      $errorMessage = addSource($req['interventionId'], $req['sourceName'], $req['sourceLink'], $req['sourceType']);
+    } else {
+      $errorMessage = "Some datas are incorrect";
     }
     return true;
   }
   return false;
 }
 
-function checkNewEngagement($req){
+function checkNewEngagement($req, &$errorMessage){
   if(isset($req['interventionId']) && isset($req['originalText']) && isset($req['sourceLink']) && isset($req['interventionPos']) && isset($req['engagementRef']) && isset($req['engagementCategory']) && isset($req['engagementDesc'])){
     if(is_id($req['interventionId']) && !empty($req['originalText']) && is_url($req['sourceLink']) && !empty($req['interventionPos']) && (is_id($req['engagementRef']) || (is_id($req['engagementCategory']) && !empty($req['engagementDesc'])))){
-      addEngagement($req['interventionId'], $req['originalText'], $req['sourceLink'], $req['interventionPos'], $req['engagementRef'], $req['engagementCategory'], $req['engagementDesc']);
+      $errorMessage = addEngagement($req['interventionId'], $req['originalText'], $req['sourceLink'], $req['interventionPos'], $req['engagementRef'], $req['engagementCategory'], $req['engagementDesc']);
+    } else {
+      $errorMessage = "Some datas are incorrect";
     }
     return true;
   }
