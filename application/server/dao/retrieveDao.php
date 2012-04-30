@@ -53,6 +53,10 @@ function daoGetEngagementCategory(){
 }
 
 function daoGetInterventions(){
+  return daoGetIntervention("i.id"); // no intervention filtre in where clause !
+}
+
+function daoGetIntervention($interventionId){
   dbConnect(getStatus());
   
   $req = "SELECT i.id, it.name as type, i.name, i.date, IF(ihe.interventionId IS NOT NULL, count(s.id), 0) as engagementNb, s.id as sourceId, s.title as sourceName, s.link as sourceLink, st.name as sourceType
@@ -60,7 +64,8 @@ FROM ".prefix()."intervention i
 LEFT OUTER JOIN ".prefix()."interventionType it ON it.id = i.interventionType
 LEFT OUTER JOIN ".prefix()."source s ON s.intervention = i.id
 LEFT OUTER JOIN ".prefix()."sourceType st ON st.id = s.sourceType
-LEFT OUTER JOIN ".prefix()."interventionHasEngagement ihe ON ihe.interventionId=i.id
+LEFT OUTER JOIN ".prefix()."interventionHasEngagement ihe ON ihe.interventionId = i.id
+WHERE i.id = ".$interventionId."
 GROUP BY s.id
 ORDER BY i.date DESC";
 
@@ -79,7 +84,7 @@ ORDER BY i.date DESC";
       $ret[$index]["name"] = decode($data['name']);
       $ret[$index]["date"] = dateFormat(decode($data['date']));
       $ret[$index]["heure"] = heureFormat(decode($data['date']));
-      $ret[$index]["engagementNb"] = decode($data['engagementNb']);
+      $ret[$index]["engagementsNb"] = decode($data['engagementNb']);
       $ret[$index]["sources"][$srcIndex]["name"] = decode($data['sourceName']);
       $ret[$index]["sources"][$srcIndex]["link"] = decode($data['sourceLink']);
       $ret[$index]["sources"][$srcIndex]["type"] = decode($data['sourceType']);
@@ -98,14 +103,19 @@ ORDER BY i.date DESC";
 }
 
 function daoGetEngagements(){
+  return daoGetInterventionEngagements("i.id"); // no intervention filtre in where clause !
+}
+
+function daoGetInterventionEngagements($interventionId){
   dbConnect(getStatus());
   
-  $req = "SELECT e.id, ec.name as category, e.content, i.name as interventionName, it.name as interventionType, ihe.originalText as interventionContent, ihe.interventionPos, ihe.specificLink as interventionLink, i.date as interventionDate
-FROM lpad_engagement e
-LEFT OUTER JOIN lpad_engagementCategory ec ON ec.id=e.engagementCategory
-LEFT OUTER JOIN lpad_interventionHasEngagement ihe ON ihe.engagementId=e.id
-LEFT OUTER JOIN lpad_intervention i ON i.id=ihe.interventionId
-LEFT OUTER JOIN lpad_interventionType it ON it.id=i.interventionType
+  $req = "SELECT e.id, ec.name as category, e.content, i.id as interventionId, i.name as interventionName, it.name as interventionType, ihe.originalText as interventionContent, ihe.interventionPos, ihe.specificLink as interventionLink, i.date as interventionDate
+FROM ".prefix()."engagement e
+LEFT OUTER JOIN ".prefix()."engagementCategory ec ON ec.id=e.engagementCategory
+LEFT OUTER JOIN ".prefix()."interventionHasEngagement ihe ON ihe.engagementId=e.id
+LEFT OUTER JOIN ".prefix()."intervention i ON i.id=ihe.interventionId
+LEFT OUTER JOIN ".prefix()."interventionType it ON it.id=i.interventionType
+WHERE i.id = ".$interventionId."
 ORDER BY e.engagementCategory";
 
   $result = mysql_query($req);

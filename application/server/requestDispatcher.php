@@ -3,11 +3,13 @@ include_once 'server/utils/stringSecure.php';
 include_once 'server/utils/stringUtils.php';
 include_once 'server/provider/dataProvider.php';
 
-function dispatchRequest($POST, $GET, &$errorMessage){
-  foreach($POST as $key => $value){
+function dispatchRequest($_POST, $_GET, &$errorMessage){
+  $POST = array();
+  $GET = array();
+  foreach($_POST as $key => $value){
     $POST[$key] = safe_string($value);
   }
-  foreach($GET as $key => $value){
+  foreach($_GET as $key => $value){
     $GET[$key] = safe_string($value);
   }
   

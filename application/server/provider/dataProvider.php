@@ -1,4 +1,5 @@
 <?php
+include_once 'server/utils/stringSecure.php';
 include_once 'server/utils/stringUtils.php';
 include_once 'server/dao/persistDao.php';
 include_once 'server/dao/retrieveDao.php';
@@ -23,6 +24,34 @@ function getInterventions(){
 
 function getEngagements(){
   return daoGetEngagements();
+}
+
+function getInterventionEngagements($_interventionId){
+  if(isset($_interventionId) && is_id($_interventionId)){
+    $interventionId = safe_string($_interventionId);
+    $interventionArray = daoGetIntervention($interventionId);
+    
+    if(is_array($interventionArray) && isset($interventionArray[0])){
+      $intervention = $interventionArray[0];
+      $interventionEngagementsArray = daoGetInterventionEngagements($interventionId);
+      
+      if(is_array($interventionEngagementsArray) && isset($interventionEngagementsArray[0])){
+        $intervention['engagements'] = $interventionEngagementsArray;
+        foreach($intervention['engagements'] as $key => $engagement){
+          if($engagement['interventionsNb'] == 1 && is_array($engagement['interventions']) && isset($engagement['interventions'][0])){
+            $intervention['engagements'][$key]['intervention'] =  $intervention['engagements'][$key]['interventions'][0];
+            unset($intervention['engagements'][$key]['interventions']);
+          }
+        }
+      } else {
+        $intervention['engagements'] = null;
+      }
+      
+      return $intervention;
+    }
+    
+  }
+  return null;
 }
 
 function addIntervention($interventionName, $interventionDate, $interventionTypeId, $sourceName, $sourceLink, $sourceTypeId){

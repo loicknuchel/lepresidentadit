@@ -89,10 +89,10 @@ $engagements = getEngagements();
                   <td>
                     '.newEngagementModal('modalEngagement'.$intervention['id'], $engagements, $engagementCategories, $intervention['id'], $intervention['name']).'
                     <div class="btn-group">
-                      <button class="btn">'.($intervention['engagementNb'] == 0 ? "Pas d'engagements" : $intervention['engagementNb'].' engagement'.($intervention['engagementNb'] > 1 ? 's' : '')).'</button>
+                      <button class="btn"><a href="intervention-engagements.php?intervention='.$intervention['id'].'">'.($intervention['engagementsNb'] == 0 ? "Pas d'engagements" : $intervention['engagementsNb'].' engagement'.($intervention['engagementsNb'] > 1 ? 's' : '')).'</a></button>
                       <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
                       <ul class="dropdown-menu">
-                        '.($intervention['engagementNb'] > 0 ? '<li><a href="#">Voir les engagements</a></li>' : '').'
+                        '.($intervention['engagementsNb'] > 0 ? '<li><a href="intervention-engagements.php?intervention='.$intervention['id'].'">Voir les engagements</a></li>' : '').'
                         <li class="divider"></li>
                         <li><a data-toggle="modal" href="#modalEngagement'.$intervention['id'].'">Nouvel engagement</a></li>
                       </ul>
