@@ -11,7 +11,9 @@ function newInterventionForm($interventionTypes){
           <div class="control-group">
             <label class="control-label" for="interventionDate">Date de l\'intervention :</label>
             <div class="controls">
-              <input type="date" id="interventionDate" name="interventionDate" placeholder="date de l\'intervention" />
+              <div class="input-append">
+                <input type="text" id="interventionDate" name="interventionDate" placeholder="date de l\'intervention" /><span class="add-on"><i class="icon-calendar"></i></span>
+              </div><br/>
               <span class="help-inline">Ex: 2012-04-10</span>
             </div>
           </div>
@@ -48,6 +50,24 @@ function newSourceForm($sourceTypes){
           </div>';
 }
 
+function newEngagementForm($engagementCategories){
+  $form = '<div class="control-group">
+            <label class="control-label" for="engagementCategory">Catégorie :</label>
+            <div class="controls">
+              <div class="input-append">
+                '.enumToSelect($engagementCategories, 'engagementCategory', "Catégorie de l'engagement").'
+              </div>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="engagementDesc">Description de l\'engagement :</label>
+            <div class="controls">
+              <textarea class="input-xlarge" id="engagementDesc" name="engagementDesc" rows="3"></textarea>
+            </div>
+          </div>';
+  return $form;
+}
+
 function newEngagementInterventionForm(){
   return '<div class="control-group">
             <label class="control-label" for="originalText">Texte original :</label>
@@ -70,7 +90,7 @@ function newEngagementInterventionForm(){
           </div>';
 }
 
-function addEngagementForm($engagements, $engagementCategories, $interventionId){
+function addEngagementForm($engagements, $engagementCategories, $interventionId, $activeTab = 1){
   $form = '<div class="control-group">
             <label class="control-label" for="engagementCategory">Catégorie :</label>
             <div class="controls">
@@ -81,11 +101,11 @@ function addEngagementForm($engagements, $engagementCategories, $interventionId)
           </div>
           <div class="tabbable">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#linkEngagement'.$interventionId.'" data-toggle="tab">Engagement existant</a></li>
-              <li><a href="#createEngagement'.$interventionId.'" data-toggle="tab">Nouvel engagement</a></li>
+              <li'.($activeTab == 1 ? ' class="active"' : '').'><a href="#linkEngagement'.$interventionId.'" data-toggle="tab">Engagement existant</a></li>
+              <li'.($activeTab == 2 ? ' class="active"' : '').'><a href="#createEngagement'.$interventionId.'" data-toggle="tab">Nouvel engagement</a></li>
             </ul>
             <div class="tab-content">
-              <div class="tab-pane active" id="linkEngagement'.$interventionId.'">
+              <div class="tab-pane'.($activeTab == 1 ? ' active' : '').'" id="linkEngagement'.$interventionId.'">
                 <p>
                   <select name="engagementRef">
                     <option> -- Engagements existant</oprion>';
@@ -96,7 +116,7 @@ function addEngagementForm($engagements, $engagementCategories, $interventionId)
                   </select>
                 </p>
               </div>
-              <div class="tab-pane" id="createEngagement'.$interventionId.'">
+              <div class="tab-pane'.($activeTab == 2 ? ' active' : '').'" id="createEngagement'.$interventionId.'">
                 <p>
                   <div class="control-group">
                     <label class="control-label" for="engagementDesc">Description de l\'engagement :</label>
@@ -104,6 +124,41 @@ function addEngagementForm($engagements, $engagementCategories, $interventionId)
                       <textarea class="input-xlarge" id="engagementDesc" name="engagementDesc" rows="3"></textarea>
                     </div>
                   </div>
+                </p>
+              </div>
+            </div>
+          </div>';
+  return $form;
+}
+
+function addInterventionForm($interventions, $interventionTypes, $sourceTypes, $activeTab = 1){
+  $form = '<div class="tabbable">
+            <ul class="nav nav-tabs">
+              <li'.($activeTab == 1 ? ' class="active"' : '').'><a href="#linkIntervention" data-toggle="tab">Intervention existante</a></li>
+              <li'.($activeTab == 2 ? ' class="active"' : '').'><a href="#createIntervention" data-toggle="tab">Nouvelle intervention</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane'.($activeTab == 1 ? ' active' : '').'" id="linkIntervention">
+                <p>
+                  <select name="engagementRef">
+                    <option> -- Intervention existante</oprion>';
+                  foreach($interventions as $key => $intervention){
+                    $form .= '<option value="'.$intervention['id'].'">'.$intervention['date'].' - '.$intervention['name'].'</option>';
+                  }
+                $form .= '
+                  </select>
+                </p>
+              </div>
+              <div class="tab-pane'.($activeTab == 2 ? ' active' : '').'" id="createIntervention">
+                <p>
+                  <fieldset>
+                    '.newInterventionForm($interventionTypes).'
+                  </fieldset>
+            
+                  <fieldset>
+                  <legend>Source :</legend>
+                    '.newSourceForm($sourceTypes).'
+                  </fieldset>
                 </p>
               </div>
             </div>

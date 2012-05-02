@@ -82,7 +82,7 @@ $engagements = getEngagements();
           <div class="span12">
             <h2>Engagements de cette intervention :</h2>
             <?php 
-              echo newEngagementModal('modalEngagement'.$interventionEngagements['id'], $engagements, $engagementCategories, $interventionEngagements['id'], $interventionEngagements['name'])
+              echo newEngagementInterventionModal('modalEngagement'.$interventionEngagements['id'], $engagements, $engagementCategories, $interventionEngagements['id'], $interventionEngagements['name'])
                 .'<a class="btn" data-toggle="modal" href="#modalEngagement'.$interventionEngagements['id'].'">Ajouter engagement</a>'; 
             ?>
             
@@ -111,7 +111,8 @@ $engagements = getEngagements();
             ?>
           </div>
         </div>
-    
+        
+        <?php //echo '<pre>';print_r($interventionEngagements);echo '</pre>';?>
     <?php 
       } 
     ?>

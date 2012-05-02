@@ -1,8 +1,19 @@
 <?php
 include_once 'inc/head.php';
 include_once 'inc/header.php';
+include_once 'inc/modals.php';
 include_once 'inc/footer.php';
+include_once 'server/requestDispatcher.php';
 include_once 'server/provider/dataProvider.php';
+
+$res = dispatchRequest($_POST, $_GET, $errorMessage);
+
+$interventionTypes = getInterventionTypes();
+$sourceTypes = getSourceTypes();
+$engagementCategories = getEngagementCategory();
+$interventions = getInterventions();
+$engagements = getEngagements();
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -18,45 +29,7 @@ include_once 'server/provider/dataProvider.php';
       <div class="span12">
         <h1>Engagements</h1>
         <a data-toggle="modal" href="#modalAddEngagement" class="btn">Nouvel engagement</a>
-        <div class="modal hide fade" id="modalAddEngagement">
-          <form class="form-horizontal" method="POST" action="" style="margin: 0px;">
-            <div class="modal-header">
-              <a class="close" data-dismiss="modal">×</a>
-              <h3>Nouvel engagement</h3>
-            </div>
-            <div class="modal-body">
-              <p>
-                <fieldset>
-                  <div class="control-group">
-                    <label class="control-label" for="engagement">Texte original :</label>
-                    <div class="controls">
-                      <textarea class="input-xlarge" id="engagement" name="engagement" rows="3"></textarea>
-                    </div>
-                  </div>
-                  <div class="control-group">
-                    <label class="control-label" for="interventionDate">Date de l'intervention :</label>
-                    <div class="controls">
-                      <input type="date" id="interventionDate" name="interventionDate" placeholder="date de l'intervention" />
-                      <span class="help-inline">Ex: 2012-04-10</span>
-                    </div>
-                  </div>
-                  <div class="control-group">
-                    <label class="control-label" for="interventionType">Type de l'intervention :</label>
-                    <div class="controls">
-                      <div class="input-append">
-                        <?php echo $interventionSelect; ?>
-                      </div>
-                    </div>
-                  </div>
-                </fieldset>
-              </p>
-            </div>
-            <div class="modal-footer">
-              <a href="#" class="btn" data-dismiss="modal">Close</a>
-              <button type="submit" class="btn btn-primary">Enregistrer l'engagement</button>
-            </div>
-          </form>
-        </div>
+        <?php echo newEngagementModal('modalAddEngagement', $engagementCategories); ?>
       </div>
     </div>
     <br/>
@@ -80,22 +53,31 @@ include_once 'server/provider/dataProvider.php';
                   <td>'.$count.'</td>
                   <td>'.$engagement['category'].'</td>
                   <td>'.$engagement['content'].'</td>
-                  <td><a href="" class="btn">'.$engagement['interventionsNb'].' intervention'.($engagement['interventionsNb'] > 1 ? 's' : '').'</a></td>
+                  <td>
+                    <div class="btn-group">
+                      <button class="btn"><a href="">dans '.$engagement['interventionsNb'].' intervention'.($engagement['interventionsNb'] > 1 ? 's' : '').'</a></button>
+                      <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                      <ul class="dropdown-menu">'; 
+                        foreach($engagement['interventions'] as $interventionKey => $intervention){
+                          echo '<li><a href="'.$intervention['link'].'" title="'.$intervention['position'].'" class="js-tooltip">'.$intervention['name'].' ('.$intervention['type'].')</a></li>';
+                        }
+                    echo '<li class="divider"></li>
+                          <li>
+                            <a data-toggle="modal" href="#modalSource'.$engagement['id'].'"><i class="icon-plus"></i> Lier à une intervention</a>
+                           </li>
+                      </ul>
+                    </div>
+                  </td>
                 </tr>';
                 $count++;
               }
             ?>
-          
-          
           </tbody>
         </table>
-        <pre>
-          <?php 
-            print_r($engagements);
-          ?>
-        </pre>
       </div>
     </div>
+    
+    <?php echo '<pre>';print_r($engagements);echo '</pre>';?>
   </div>
     
   <?php echo createFooter(); ?>
