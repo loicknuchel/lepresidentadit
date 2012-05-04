@@ -25,11 +25,14 @@ $engagements = getEngagements();
 	
   <div class="container">
     <?php
-      if(($errorMessage != null && $errorMessage != '') || $res = true){
-        echo $errorMessage;
-        echo '<pre>';
+      if($errorMessage != null && $errorMessage != ''){
+        echo '<div class="alert alert-block alert-error fade in">
+          <button class="close" data-dismiss="alert">&times;</button>
+          <strong>Oups!</strong> '.$errorMessage.'
+        </div>';
+        /*echo '<pre>';
         print_r($_POST);
-        echo '</pre>';
+        echo '</pre>';*/
       }
     ?>
     <div class="row">

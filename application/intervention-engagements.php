@@ -30,10 +30,13 @@ $engagements = getEngagements();
   <div class="container">
     <?php
       if($errorMessage != null && $errorMessage != ''){
-        echo $errorMessage;
-        echo '<pre>';
+        echo '<div class="alert alert-block alert-error fade in">
+          <button class="close" data-dismiss="alert">&times;</button>
+          <strong>Oups!</strong> '.$errorMessage.'
+        </div>';
+        /*echo '<pre>';
         print_r($_POST);
-        echo '</pre>';
+        echo '</pre>';*/
       }
     ?>
     <?php 
@@ -43,7 +46,7 @@ $engagements = getEngagements();
         <div class="row">
           <div class="span12">
             <h1><?php echo $interventionEngagements['type'].' : '.$interventionEngagements['name']; ?></h1>
-            <a href="interventions.php" class="btn">Retour interventions</a>
+            <!--<a href="interventions.php" class="btn">Retour interventions</a>-->
           </div>
         </div>
         <br/>
@@ -96,50 +99,50 @@ $engagements = getEngagements();
             
             <?php
               if($interventionEngagements['engagements'] != null && $interventionEngagements['engagements'] != ''){
-              echo '<table class="table table-striped">
-                <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Catégorie</th>
-                  <th>titre</th>
-                  <th>proposition</th>
-                  <th>Citation exacte</th>
-                  <th>Référence exacte</th>
-                  <th>Interventions</th>
-                </tr>
-                </thead>
-                <tbody>';
-                $index = 1;
-                foreach($interventionEngagements['engagements'] as $key => $engagement){
-                  if($engagement['interventionsNb'] == 1 && isset($engagement['intervention'])){
-                    echo '<tr>
-                      <td>'.$index.'</td>
-                      <td>'.$engagement['category'].'</td>
-                      <td>'.$engagement['title'].'</td>
-                      <td>'.$engagement['content'].'</td>
-                      <td>'.$engagement['intervention']['content'].'</td>
-                      <td>'.($engagement['intervention']['link'] != '' ? '<a href="'.$engagement['intervention']['link'].'">'.$engagement['intervention']['position'].'</a>' : $engagement['intervention']['position']).'</td>
-                      <td>dans '.$engagement['interventionsNb'].' intervention'.($engagement['interventionsNb'] != 1 ? 's' : '').'</td>
-                    </tr>';
-                    $index++;
-                  } else if($engagement['interventionsNb'] > 1 && isset($engagement['interventions'])){
-                    foreach($engagement['interventions'] as $iKey => $intervention){
+                echo '<table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>catégorie</th>
+                    <th>titre</th>
+                    <th>proposition</th>
+                    <th>citation exacte</th>
+                    <th>référence exacte</th>
+                    <th>interventions</th>
+                  </tr>
+                  </thead>
+                  <tbody>';
+                  $index = 1;
+                  foreach($interventionEngagements['engagements'] as $key => $engagement){
+                    if($engagement['interventionsNb'] == 1 && isset($engagement['intervention'])){
                       echo '<tr>
                         <td>'.$index.'</td>
                         <td>'.$engagement['category'].'</td>
                         <td>'.$engagement['title'].'</td>
                         <td>'.$engagement['content'].'</td>
-                        <td>'.$intervention['content'].'</td>
-                        <td>'.($intervention['link'] != '' ? '<a href="'.$intervention['link'].'">'.$intervention['position'].'</a>' : $intervention['position']).'</td>
+                        <td>'.$engagement['intervention']['content'].'</td>
+                        <td>'.($engagement['intervention']['link'] != '' ? '<a href="'.$engagement['intervention']['link'].'">'.$engagement['intervention']['position'].'</a>' : $engagement['intervention']['position']).'</td>
                         <td>dans '.$engagement['interventionsNb'].' intervention'.($engagement['interventionsNb'] != 1 ? 's' : '').'</td>
                       </tr>';
                       $index++;
+                    } else if($engagement['interventionsNb'] > 1 && isset($engagement['interventions'])){
+                      foreach($engagement['interventions'] as $iKey => $intervention){
+                        echo '<tr>
+                          <td>'.$index.'</td>
+                          <td>'.$engagement['category'].'</td>
+                          <td>'.$engagement['title'].'</td>
+                          <td>'.$engagement['content'].'</td>
+                          <td>'.$intervention['content'].'</td>
+                          <td>'.($intervention['link'] != '' ? '<a href="'.$intervention['link'].'">'.$intervention['position'].'</a>' : $intervention['position']).'</td>
+                          <td>dans '.$engagement['interventionsNb'].' intervention'.($engagement['interventionsNb'] != 1 ? 's' : '').'</td>
+                        </tr>';
+                        $index++;
+                      }
                     }
+                    
                   }
-                  
-                }
-                echo '</tbody>
-              </table>';
+                  echo '</tbody>
+                </table>';
               }
             ?>
           </div>

@@ -54,6 +54,17 @@ function getInterventionEngagements($_interventionId){
   return null;
 }
 
+function getEngagementInterventions($_engagementId){
+  if(isset($_engagementId) && is_id($_engagementId)){
+    $engagementId = safe_string($_engagementId);
+    $engagementArray = daoGetEngagement($engagementId);
+    
+    $engagement = $engagementArray;
+    return $engagement;
+  }
+  return null;
+}
+
 function addIntervention($interventionName, $interventionDate, $interventionTypeId, $sourceName, $sourceLink, $sourceTypeId){
   $interventionId = daoPersistNewIntervention($interventionName, $interventionDate, $interventionTypeId);
   if($interventionId > 0){

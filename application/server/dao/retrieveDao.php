@@ -53,11 +53,16 @@ function daoGetEngagementCategory(){
 }
 
 function daoGetInterventions(){
-  return daoGetIntervention("i.id"); // no intervention filtre in where clause !
+  return daoGetIntervention(""); // no intervention filtre in where clause !
 }
 
 function daoGetIntervention($interventionId){
   dbConnect(getStatus());
+  if($interventionId == null || $interventionId == ""){
+    $where = "";
+  } else {
+    $where = "WHERE i.id = ".$interventionId."";
+  }
   
   $req = "SELECT i.id, it.name as type, i.name, i.date, IF(ihe.interventionId IS NOT NULL, count(s.id), 0) as engagementNb, s.id as sourceId, s.title as sourceName, s.link as sourceLink, st.name as sourceType
 FROM ".prefix()."intervention i
@@ -65,7 +70,7 @@ LEFT OUTER JOIN ".prefix()."interventionType it ON it.id = i.interventionType
 LEFT OUTER JOIN ".prefix()."source s ON s.intervention = i.id
 LEFT OUTER JOIN ".prefix()."sourceType st ON st.id = s.sourceType
 LEFT OUTER JOIN ".prefix()."interventionHasEngagement ihe ON ihe.interventionId = i.id
-WHERE i.id = ".$interventionId."
+".$where."
 GROUP BY s.id
 ORDER BY i.date DESC";
 
@@ -103,16 +108,24 @@ ORDER BY i.date DESC";
 }
 
 function daoGetEngagements(){
-  return daoGetInterventionEngagements(""); // no intervention filtre in where clause !
+  return daoPrivGetEngagement(""); // no intervention filtre in where clause !
+}
+
+function daoGetEngagement($engagementId){
+  $engagementArray = daoPrivGetEngagement("WHERE e.id = ".$engagementId, "ORDER BY i.date DESC");
+  if(is_array($engagementArray) && isset($engagementArray[0])){
+    return $engagementArray[0];
+  }
+  return null;
 }
 
 function daoGetInterventionEngagements($interventionId){
+   return daoPrivGetEngagement("WHERE i.id = ".$interventionId, "ORDER BY e.engagementCategory");
+}
+
+// private
+function daoPrivGetEngagement($where, $order = ''){
   dbConnect(getStatus());
-  if($interventionId == null || $interventionId == ""){
-    $where = "";
-  } else {
-    $where = "WHERE i.id = ".$interventionId."";
-  }
   
   $req = "SELECT e.id, ec.name as category, e.title, e.content, i.id as interventionId, i.name as interventionName, it.name as interventionType, ihe.originalText as interventionContent, ihe.interventionPos, ihe.specificLink as interventionLink, i.date as interventionDate
 FROM ".prefix()."engagement e
@@ -121,7 +134,7 @@ LEFT OUTER JOIN ".prefix()."interventionHasEngagement ihe ON ihe.engagementId=e.
 LEFT OUTER JOIN ".prefix()."intervention i ON i.id=ihe.interventionId
 LEFT OUTER JOIN ".prefix()."interventionType it ON it.id=i.interventionType
 ".$where."
-ORDER BY e.engagementCategory";
+".$order;
 
   $result = mysql_query($req);
 	$ret = array();
@@ -168,6 +181,5 @@ ORDER BY e.engagementCategory";
   dbDisconnect();
 	return $ret;
 }
-
 
 ?>
