@@ -24,7 +24,14 @@ $engagements = getEngagements();
   <?php echo createHeader("interventions"); ?>
 	
   <div class="container">
-    
+    <?php
+      if($errorMessage != null && $errorMessage != ''){
+        echo $errorMessage;
+        echo '<pre>';
+        print_r($_POST);
+        echo '</pre>';
+      }
+    ?>
     <div class="row">
       <div class="span12">
         <h1>Interventions</h1>

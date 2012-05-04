@@ -26,23 +26,31 @@ function dbDisconnect(){
 }
 
 function dateFormat($dateTime){
-  $dateArray = explode(" ", $dateTime);
-  $date = $dateArray[0];
-  $dateArray = explode("-", $date);
-  $annee = $dateArray[0];
-  $mois = $dateArray[1];
-  $jour = $dateArray[2];
-  return $jour.'/'.$mois.'/'.$annee;
+  if($dateTime == null || $dateTime == ""){
+    return "";
+  } else {
+    $dateArray = explode(" ", $dateTime);
+    $date = $dateArray[0];
+    $dateArray = explode("-", $date);
+    $annee = $dateArray[0];
+    $mois = $dateArray[1];
+    $jour = $dateArray[2];
+    return $jour.'/'.$mois.'/'.$annee;
+  }
 }
 
 function heureFormat($dateTime){
-  $dateArray = explode(" ", $dateTime);
-  $time = $dateArray[1];
-  $timeArray = explode(":", $time);
-  $heure = $timeArray[0];
-  $minute = $timeArray[1];
-  $seconde = $timeArray[2];
-  return $heure.'h'.$minute;
+  if($dateTime == null || $dateTime == ""){
+    return "";
+  } else {
+    $dateArray = explode(" ", $dateTime);
+    $time = $dateArray[1];
+    $timeArray = explode(":", $time);
+    $heure = $timeArray[0];
+    $minute = $timeArray[1];
+    $seconde = $timeArray[2];
+    return $heure.'h'.$minute;
+  }
 }
 
 function prefix(){

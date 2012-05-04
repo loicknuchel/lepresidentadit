@@ -76,22 +76,52 @@ function addSource($interventionId, $sourceName, $sourceLink, $sourceTypeId){
   }
 }
 
-function addEngagement($interventionId, $originalText, $sourceLink, $interventionPos, $engagementId, $engagementCategoryId, $engagementContent){
+function addEngagementIntervention($interventionId, $originalText, $specificLink, $interventionPos, $engagementId, $engagementCategoryId, $engagementTitle, $engagementContent){
   // si l'engagement n'existe pas, on le crée
   if(!is_id($engagementId)){
-    $engagementId = daoPersistNewEngagement($engagementCategoryId, $engagementContent);
+    $engagementId = daoPersistNewEngagement($engagementCategoryId, $engagementTitle, $engagementContent);
     if($engagementId <= 0){
       return "Error when try to register engagement (".$engagementId.")";
     }
   }
   
-  $interventionEngagementId = daoPersistNewInterventionEngagement($interventionId, $engagementId, $originalText, $sourceLink, $interventionPos);
+  $interventionEngagementId = daoPersistNewInterventionEngagement($interventionId, $engagementId, $originalText, $specificLink, $interventionPos);
   if($interventionEngagementId <= 0){
     return "Error when try to register intervetion engagement (".$interventionEngagementId.")";
   } else {
     return null;
   }
+}
+
+function addEngagement($engagementCategoryId, $engagementTitle, $engagementDesc){
+  $engagementId = daoPersistNewEngagement($engagementCategoryId, $engagementTitle, $engagementDesc);
+  if($engagementId <= 0){
+    return "Error when try to register engagement (".$engagementId.")";
+  } else {
+    return null;
+  }
+}
+
+function addInterventionEngagement($engagementId, $originalText, $specificLink, $interventionPos, $interventionId, $interventionName, $interventionDate, $interventionTypeId, $sourceName, $sourceLink, $sourceTypeId){
+  // si l'intervention n'existe pas, on la crée
+  if(!is_id($interventionId)){
+    $interventionId = daoPersistNewIntervention($interventionName, $interventionDate, $interventionTypeId);
+    if($interventionId > 0){
+      $sourceId = daoPersistNewSource($interventionId, $sourceName, $sourceLink, $sourceTypeId);
+      if($sourceId <= 0){
+        return "Error when try to register intervetion source (".$sourceId.")";
+      }
+    } else {
+      return "Error when try to register intervetion (".$interventionId.")";
+    }
+  }
   
+  $interventionEngagementId = daoPersistNewInterventionEngagement($interventionId, $engagementId, $originalText, $specificLink, $interventionPos);
+  if($interventionEngagementId <= 0){
+    return "Error when try to register intervetion engagement (".$interventionEngagementId.")";
+  } else {
+    return null;
+  }
 }
 
 ?>

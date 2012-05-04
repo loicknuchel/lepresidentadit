@@ -103,19 +103,24 @@ ORDER BY i.date DESC";
 }
 
 function daoGetEngagements(){
-  return daoGetInterventionEngagements("i.id"); // no intervention filtre in where clause !
+  return daoGetInterventionEngagements(""); // no intervention filtre in where clause !
 }
 
 function daoGetInterventionEngagements($interventionId){
   dbConnect(getStatus());
+  if($interventionId == null || $interventionId == ""){
+    $where = "";
+  } else {
+    $where = "WHERE i.id = ".$interventionId."";
+  }
   
-  $req = "SELECT e.id, ec.name as category, e.content, i.id as interventionId, i.name as interventionName, it.name as interventionType, ihe.originalText as interventionContent, ihe.interventionPos, ihe.specificLink as interventionLink, i.date as interventionDate
+  $req = "SELECT e.id, ec.name as category, e.title, e.content, i.id as interventionId, i.name as interventionName, it.name as interventionType, ihe.originalText as interventionContent, ihe.interventionPos, ihe.specificLink as interventionLink, i.date as interventionDate
 FROM ".prefix()."engagement e
 LEFT OUTER JOIN ".prefix()."engagementCategory ec ON ec.id=e.engagementCategory
 LEFT OUTER JOIN ".prefix()."interventionHasEngagement ihe ON ihe.engagementId=e.id
 LEFT OUTER JOIN ".prefix()."intervention i ON i.id=ihe.interventionId
 LEFT OUTER JOIN ".prefix()."interventionType it ON it.id=i.interventionType
-WHERE i.id = ".$interventionId."
+".$where."
 ORDER BY e.engagementCategory";
 
   $result = mysql_query($req);
@@ -130,17 +135,25 @@ ORDER BY e.engagementCategory";
       $interventionIndex = 0;
       $ret[$index]["id"] = decode($data['id']);
       $ret[$index]["category"] = decode($data['category']);
+      $ret[$index]["title"] = decode($data['title']);
       $ret[$index]["content"] = decode($data['content']);
-      $ret[$index]["interventions"][$interventionIndex]["name"] = decode($data['interventionName']);
-      $ret[$index]["interventions"][$interventionIndex]["type"] = decode($data['interventionType']);
-      $ret[$index]["interventions"][$interventionIndex]["content"] = decode($data['interventionContent']);
-      $ret[$index]["interventions"][$interventionIndex]["date"] = dateFormat(decode($data['interventionDate']));
-      $ret[$index]["interventions"][$interventionIndex]["heure"] = heureFormat(decode($data['interventionDate']));
-      $ret[$index]["interventions"][$interventionIndex]["link"] = decode($data['interventionLink']);
-      $ret[$index]["interventions"][$interventionIndex]["position"] = decode($data['interventionPos']);
-      $ret[$index]["interventionsNb"] = $interventionIndex+1;
+      if($data['interventionName'] == null && $data['interventionName'] == ""){
+        $ret[$index]["interventions"] = array();
+        $ret[$index]["interventionsNb"] = 0;
+      } else {
+        $ret[$index]["interventions"][$interventionIndex]["id"] = decode($data['interventionId']);
+        $ret[$index]["interventions"][$interventionIndex]["name"] = decode($data['interventionName']);
+        $ret[$index]["interventions"][$interventionIndex]["type"] = decode($data['interventionType']);
+        $ret[$index]["interventions"][$interventionIndex]["content"] = decode($data['interventionContent']);
+        $ret[$index]["interventions"][$interventionIndex]["date"] = dateFormat(decode($data['interventionDate']));
+        $ret[$index]["interventions"][$interventionIndex]["heure"] = heureFormat(decode($data['interventionDate']));
+        $ret[$index]["interventions"][$interventionIndex]["link"] = decode($data['interventionLink']);
+        $ret[$index]["interventions"][$interventionIndex]["position"] = decode($data['interventionPos']);
+        $ret[$index]["interventionsNb"] = $interventionIndex+1;
+      }
     } else {
       $interventionIndex++;
+      $ret[$index]["interventions"][$interventionIndex]["id"] = decode($data['interventionId']);
       $ret[$index]["interventions"][$interventionIndex]["name"] = decode($data['interventionName']);
       $ret[$index]["interventions"][$interventionIndex]["type"] = decode($data['interventionType']);
       $ret[$index]["interventions"][$interventionIndex]["content"] = decode($data['interventionContent']);

@@ -22,9 +22,9 @@ function daoPersistNewSource($interventionId, $sourceName, $sourceLink, $sourceT
   return $res;
 }
 
-function daoPersistNewEngagement($engagementCategoryId, $engagementContent){
+function daoPersistNewEngagement($engagementCategoryId, $engagementTitle, $engagementContent){
   dbConnect(getStatus());
-  $req = "INSERT INTO `".prefix()."engagement` (`engagementCategory`, `content`) VALUES (".$engagementCategoryId.", ".nullSafe($engagementContent).");";
+  $req = "INSERT INTO `".prefix()."engagement` (`engagementCategory`, `title`, `content`) VALUES (".$engagementCategoryId.", ".nullSafe($engagementTitle).", ".nullSafe($engagementContent).");";
   $persistRes = persistQuery($req);
   if($persistRes == true){$res = mysql_insert_id();}
   else{$res = -1;}
@@ -34,7 +34,7 @@ function daoPersistNewEngagement($engagementCategoryId, $engagementContent){
 
 function daoPersistNewInterventionEngagement($interventionId, $engagementId, $originalText, $sourceLink, $interventionPos){
   dbConnect(getStatus());
-  $req = "INSERT INTO `LPAD_interventionHasEngagement` (`interventionId`, `engagementId`, `originalText`, `specificLink`, `interventionPos`) VALUES (".$interventionId.", ".$engagementId.", ".nullSafe($originalText).", ".nullSafe($sourceLink).", ".nullSafe($interventionPos).");";
+  $req = "INSERT INTO `".prefix()."interventionHasEngagement` (`interventionId`, `engagementId`, `originalText`, `specificLink`, `interventionPos`) VALUES (".$interventionId.", ".$engagementId.", ".nullSafe($originalText).", ".nullSafe($sourceLink).", ".nullSafe($interventionPos).");";
   $persistRes = persistQuery($req);
   if($persistRes == true){$res = mysql_insert_id();}
   else{$res = -1;}

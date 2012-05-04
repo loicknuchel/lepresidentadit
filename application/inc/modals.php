@@ -100,4 +100,31 @@ function newEngagementModal($id, $engagementCategories){
           </div>';
 }
 
+function newInterventionEngagementModal($id, $interventions, $interventionTypes, $sourceTypes, $engagementId, $engagementTitle){
+  return '<div class="modal hide fade" id="'.$id.'">
+            <form class="form-horizontal" method="POST" action="">
+              <div class="modal-header">
+                <a class="close" data-dismiss="modal">×</a>
+                <h3>Ajouter un engagement à "'.$engagementTitle.'"</h3>
+              </div>
+              <div class="modal-body">
+                <p>
+                  <fieldset>
+                    <input type="hidden" name="engagementId" value="'.$engagementId.'" />
+                    '.newEngagementInterventionForm().'
+                  </fieldset>
+                  
+                  <fieldset>
+                    '.addInterventionForm($interventions, $interventionTypes, $sourceTypes, $engagementId).'
+                  </fieldset>
+                </p>
+              </div>
+              <div class="modal-footer">
+                <a href="" class="btn" data-dismiss="modal">Close</a>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </form>
+          </div>';
+}
+
 ?>

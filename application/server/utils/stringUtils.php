@@ -9,7 +9,10 @@
   - is_null
 */
 
-function is_simple_int($string){
+function is_simple_int($string, $orNull = false){
+  if($orNull == true && ($string == null || $string == '')){
+    return true;
+  }
   return preg_match("#^[0-9]+$#", $string);
 }
 
@@ -30,7 +33,7 @@ function is_datetime($string){
 }
 
 // TODO
-function is_url($string){
+function is_url($string, $orNull = false){
   return true;
 }
 

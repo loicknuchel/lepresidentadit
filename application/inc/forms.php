@@ -31,13 +31,13 @@ function newSourceForm($sourceTypes){
   return '<div class="control-group">
             <label class="control-label" for="sourceName">Nom de la source :</label>
             <div class="controls">
-              <input class="span3" type="text" id="sourceName" name="sourceName" placeholder="Nom de la source" />
+              <input type="text" id="sourceName" name="sourceName" placeholder="Nom de la source" />
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="sourceLink">Lien :</label>
             <div class="controls">
-              <input class="span3" type="text" id="sourceLink" name="sourceLink" placeholder="Lien" />
+              <input type="text" id="sourceLink" name="sourceLink" placeholder="Lien" />
             </div>
           </div>
           <div class="control-group">
@@ -60,6 +60,12 @@ function newEngagementForm($engagementCategories){
             </div>
           </div>
           <div class="control-group">
+            <label class="control-label" for="engagementTitle">Titre de l\'engagement :</label>
+            <div class="controls">
+              <input type="text" id="engagementTitle" name="engagementTitle" placeholder="Titre" />
+            </div>
+          </div>
+          <div class="control-group">
             <label class="control-label" for="engagementDesc">Description de l\'engagement :</label>
             <div class="controls">
               <textarea class="input-xlarge" id="engagementDesc" name="engagementDesc" rows="3"></textarea>
@@ -76,15 +82,15 @@ function newEngagementInterventionForm(){
             </div>
           </div>
           <div class="control-group">
-            <label class="control-label" for="sourceLink">Lien spécifique :</label>
+            <label class="control-label" for="specificLink">Lien spécifique :</label>
             <div class="controls">
-              <input class="span3" type="text" id="sourceLink" name="sourceLink" placeholder="Lien" />
+              <input type="text" id="specificLink" name="specificLink" placeholder="Lien" />
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="interventionPos">Emplacement précis :</label>
             <div class="controls">
-              <input class="span3" type="text" id="interventionPos" name="interventionPos" placeholder="Emplacement" /><br/>
+              <input type="text" id="interventionPos" name="interventionPos" placeholder="Emplacement" /><br/>
               <span class="help-inline">Ex: "minute 23" ou "2ième page 3ième paragraphe"</span>
             </div>
           </div>';
@@ -110,7 +116,7 @@ function addEngagementForm($engagements, $engagementCategories, $interventionId,
                   <select name="engagementRef">
                     <option> -- Engagements existant</oprion>';
                   foreach($engagements as $key => $engagement){
-                    $form .= '<option value="'.$engagement['id'].'">'.$engagement['content'].'</option>';
+                    $form .= '<option value="'.$engagement['id'].'">'.$engagement['title'].'</option>';
                   }
                 $form .= '
                   </select>
@@ -118,6 +124,12 @@ function addEngagementForm($engagements, $engagementCategories, $interventionId,
               </div>
               <div class="tab-pane'.($activeTab == 2 ? ' active' : '').'" id="createEngagement'.$interventionId.'">
                 <p>
+                  <div class="control-group">
+                    <label class="control-label" for="engagementTitle">Titre de l\'engagement :</label>
+                    <div class="controls">
+                      <input type="text" id="engagementTitle" name="engagementTitle" placeholder="Titre" />
+                    </div>
+                  </div>
                   <div class="control-group">
                     <label class="control-label" for="engagementDesc">Description de l\'engagement :</label>
                     <div class="controls">
@@ -131,16 +143,16 @@ function addEngagementForm($engagements, $engagementCategories, $interventionId,
   return $form;
 }
 
-function addInterventionForm($interventions, $interventionTypes, $sourceTypes, $activeTab = 1){
+function addInterventionForm($interventions, $interventionTypes, $sourceTypes, $engagementId, $activeTab = 1){
   $form = '<div class="tabbable">
             <ul class="nav nav-tabs">
-              <li'.($activeTab == 1 ? ' class="active"' : '').'><a href="#linkIntervention" data-toggle="tab">Intervention existante</a></li>
-              <li'.($activeTab == 2 ? ' class="active"' : '').'><a href="#createIntervention" data-toggle="tab">Nouvelle intervention</a></li>
+              <li'.($activeTab == 1 ? ' class="active"' : '').'><a href="#linkIntervention'.$engagementId.'" data-toggle="tab">Intervention existante</a></li>
+              <li'.($activeTab == 2 ? ' class="active"' : '').'><a href="#createIntervention'.$engagementId.'" data-toggle="tab">Nouvelle intervention</a></li>
             </ul>
             <div class="tab-content">
-              <div class="tab-pane'.($activeTab == 1 ? ' active' : '').'" id="linkIntervention">
+              <div class="tab-pane'.($activeTab == 1 ? ' active' : '').'" id="linkIntervention'.$engagementId.'">
                 <p>
-                  <select name="engagementRef">
+                  <select name="interventionRef">
                     <option> -- Intervention existante</oprion>';
                   foreach($interventions as $key => $intervention){
                     $form .= '<option value="'.$intervention['id'].'">'.$intervention['date'].' - '.$intervention['name'].'</option>';
@@ -149,7 +161,7 @@ function addInterventionForm($interventions, $interventionTypes, $sourceTypes, $
                   </select>
                 </p>
               </div>
-              <div class="tab-pane'.($activeTab == 2 ? ' active' : '').'" id="createIntervention">
+              <div class="tab-pane'.($activeTab == 2 ? ' active' : '').'" id="createIntervention'.$engagementId.'">
                 <p>
                   <fieldset>
                     '.newInterventionForm($interventionTypes).'

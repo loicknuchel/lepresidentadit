@@ -24,7 +24,14 @@ $engagements = getEngagements();
   <?php echo createHeader("engagements"); ?>
 	
   <div class="container">
-  
+    <?php
+      if(($errorMessage != null && $errorMessage != '') || $res = true){
+        echo $errorMessage;
+        echo '<pre>';
+        print_r($_POST);
+        echo '</pre>';
+      }
+    ?>
     <div class="row">
       <div class="span12">
         <h1>Engagements</h1>
@@ -40,6 +47,7 @@ $engagements = getEngagements();
             <tr>
               <th>#</th>
               <th>catégorie</th>
+              <th>titre</th>
               <th>engagement</th>
               <th></th>
             </tr>
@@ -52,18 +60,20 @@ $engagements = getEngagements();
                 echo '<tr>
                   <td>'.$count.'</td>
                   <td>'.$engagement['category'].'</td>
+                  <td>'.$engagement['title'].'</td>
                   <td>'.$engagement['content'].'</td>
-                  <td>
+                  <td style="min-width: 162px;">
+                    '.newInterventionEngagementModal('modelIntervention'.$engagement['id'], $interventions, $interventionTypes, $sourceTypes, $engagement['id'], $engagement['title']).'
                     <div class="btn-group">
-                      <button class="btn"><a href="">dans '.$engagement['interventionsNb'].' intervention'.($engagement['interventionsNb'] > 1 ? 's' : '').'</a></button>
+                      <button class="btn"><a href="engagement-interventions.php?engagement='.$engagement['id'].'">'.($engagement['interventionsNb'] == 0 ? 'aucune intervention' : 'dans '.$engagement['interventionsNb'].' intervention'.($engagement['interventionsNb'] > 1 ? 's' : '')).'</a></button>
                       <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
                       <ul class="dropdown-menu">'; 
                         foreach($engagement['interventions'] as $interventionKey => $intervention){
-                          echo '<li><a href="'.$intervention['link'].'" title="'.$intervention['position'].'" class="js-tooltip">'.$intervention['name'].' ('.$intervention['type'].')</a></li>';
+                          echo '<li><a href="intervention-engagements.php?intervention='.$intervention['id'].'" title="'.$intervention['position'].'" class="js-tooltip">'.$intervention['name'].' ('.$intervention['type'].')</a></li>';
                         }
                     echo '<li class="divider"></li>
                           <li>
-                            <a data-toggle="modal" href="#modalSource'.$engagement['id'].'"><i class="icon-plus"></i> Lier à une intervention</a>
+                            <a data-toggle="modal" href="#modelIntervention'.$engagement['id'].'"><i class="icon-plus"></i> Lier à une intervention</a>
                            </li>
                       </ul>
                     </div>
@@ -77,7 +87,7 @@ $engagements = getEngagements();
       </div>
     </div>
     
-    <?php echo '<pre>';print_r($engagements);echo '</pre>';?>
+    <?php //echo '<pre>';print_r($engagements);echo '</pre>';?>
   </div>
     
   <?php echo createFooter(); ?>
