@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS `lkws_politique`.`LPAD_interventionType` ;
 CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_interventionType` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
+  `ordre` INT NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -45,7 +46,7 @@ DROP TABLE IF EXISTS `lkws_politique`.`LPAD_engagementCategory` ;
 CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_engagementCategory` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
-  `ordre` INT NULL ,
+  `ordre` INT NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -105,6 +106,7 @@ DROP TABLE IF EXISTS `lkws_politique`.`LPAD_sourceType` ;
 CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_sourceType` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
+  `ordre` INT NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -135,6 +137,45 @@ CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_source` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `lkws_politique`.`LPAD_citationCategory`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `lkws_politique`.`LPAD_citationCategory` ;
+
+CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_citationCategory` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(45) NOT NULL ,
+  `ordre` INT NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `lkws_politique`.`LPAD_citation`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `lkws_politique`.`LPAD_citation` ;
+
+CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_citation` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `intervention` INT NOT NULL ,
+  `citationCategory` INT NULL ,
+  `content` TEXT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_LPAD_citation_LPAD_citationCategory` (`citationCategory` ASC) ,
+  INDEX `fk_LPAD_citation_LPAD_intervention` (`intervention` ASC) ,
+  CONSTRAINT `fk_LPAD_citation_LPAD_citationCategory`
+    FOREIGN KEY (`citationCategory` )
+    REFERENCES `lkws_politique`.`LPAD_citationCategory` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_LPAD_citation_LPAD_intervention`
+    FOREIGN KEY (`intervention` )
+    REFERENCES `lkws_politique`.`LPAD_intervention` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 USE `lkws_politique`;
 
 -- -----------------------------------------------------
@@ -151,11 +192,12 @@ COMMIT;
 -- Data for table `lkws_politique`.`LPAD_interventionType`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (1, 'Interview télévisée');
-INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (2, 'Meeting');
-INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (3, 'Programme officel');
-INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (4, 'tract');
-INSERT INTO `LPAD_interventionType` (`id`, `name`) VALUES (5, 'twitter officiel');
+INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (1, 'Interview télévisée', );
+INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (2, 'Meeting', );
+INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (3, 'Programme officel', );
+INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (4, 'tract', );
+INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (5, 'twitter officiel', );
+INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (6, 'débat', );
 
 COMMIT;
 
@@ -211,13 +253,13 @@ COMMIT;
 -- Data for table `lkws_politique`.`LPAD_sourceType`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO `LPAD_sourceType` (`id`, `name`) VALUES (1, 'YouTube');
-INSERT INTO `LPAD_sourceType` (`id`, `name`) VALUES (2, 'DailyMotion');
-INSERT INTO `LPAD_sourceType` (`id`, `name`) VALUES (3, 'Autre vidéo');
-INSERT INTO `LPAD_sourceType` (`id`, `name`) VALUES (4, 'Site de campagne');
-INSERT INTO `LPAD_sourceType` (`id`, `name`) VALUES (5, 'Article');
-INSERT INTO `LPAD_sourceType` (`id`, `name`) VALUES (6, 'Tract');
-INSERT INTO `LPAD_sourceType` (`id`, `name`) VALUES (7, 'Image');
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (1, 'YouTube', );
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (2, 'DailyMotion', );
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (3, 'Autre vidéo', );
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (4, 'Site de campagne', );
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (5, 'Article', );
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (6, 'Tract', );
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (7, 'Image', );
 
 COMMIT;
 
