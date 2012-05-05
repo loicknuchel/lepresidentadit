@@ -2,6 +2,7 @@
 include_once 'inc/head.php';
 include_once 'inc/header.php';
 include_once 'inc/footer.php';
+include_once 'server/provider/dataProvider.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -9,7 +10,7 @@ include_once 'inc/footer.php';
 	<?php echo createHead("Le président à dit"); ?>
 </head>
 <body>
-  <?php echo createHeader("home"); ?>
+  <?php echo createHeader("home", getCounts()); ?>
 	
     
     

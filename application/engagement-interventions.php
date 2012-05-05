@@ -9,16 +9,10 @@ include_once 'server/provider/dataProvider.php';
 
 $res = dispatchRequest($_POST, $_GET, $errorMessage);
 
-/*
-
-
-$engagements = getEngagements();*/
 $interventionTypes = getInterventionTypes();
-$interventions = getInterventions();
 $sourceTypes = getSourceTypes();
+$interventions = getInterventions();
 $engagementInterventions = getEngagementInterventions($_GET['engagement']);
-$engagementCategories = getEngagementCategory();
-$engagements = getEngagements();
 
 ?>
 <!DOCTYPE html>
@@ -27,7 +21,7 @@ $engagements = getEngagements();
 	<?php echo createHead("Le président à dit..."); ?>
 </head>
 <body>
-  <?php echo createHeader("engagements"); ?>
+  <?php echo createHeader("engagements", getCounts()); ?>
 	
   <div class="container">
     <?php
@@ -47,7 +41,6 @@ $engagements = getEngagements();
     
         <div class="row">
           <div class="span12">
-            <!--<a href="engagements.php" class="btn">Retour engagements</a><br/><br/>-->
             <div class="hero-unit">
               <h1><?php echo $engagementInterventions['title']; ?></h1>
               <p><?php echo $engagementInterventions['content']; ?></p>

@@ -10,7 +10,7 @@ include_once 'server/provider/dataProvider.php';
 	<?php echo createHead("Le président à dit"); ?>
 </head>
 <body>
-  <?php echo createHeader("empty"); ?>
+  <?php echo createHeader("empty", getCounts()); ?>
 	
   <div class="container">
   

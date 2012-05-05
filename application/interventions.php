@@ -8,9 +8,9 @@ include_once 'server/provider/dataProvider.php';
 
 $res = dispatchRequest($_POST, $_GET, $errorMessage);
 
-$interventionTypes = getInterventionTypes();
 $sourceTypes = getSourceTypes();
 $engagementCategories = getEngagementCategory();
+$interventionTypes = getInterventionTypes();
 $interventions = getInterventions();
 $engagements = getEngagements();
 
@@ -21,7 +21,7 @@ $engagements = getEngagements();
 	<?php echo createHead("Le président à dit..."); ?>
 </head>
 <body>
-  <?php echo createHeader("interventions"); ?>
+  <?php echo createHeader("interventions", getCounts()); ?>
 	
   <div class="container">
     <?php

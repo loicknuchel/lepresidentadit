@@ -1,4 +1,15 @@
 
+#top-menu li {
+  position: relative;
+}
+
+#top-menu .label {
+  position: absolute;
+  top: 1px;
+  right: -7px;
+  z-index: 1000;
+}
+
 .block-sample {
   float: left;
   margin: 5px;

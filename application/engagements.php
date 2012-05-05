@@ -21,7 +21,7 @@ $engagements = getEngagements();
 	<?php echo createHead("Le président à dit"); ?>
 </head>
 <body>
-  <?php echo createHeader("engagements"); ?>
+  <?php echo createHeader("engagements", getCounts()); ?>
 	
   <div class="container">
     <?php
@@ -58,7 +58,6 @@ $engagements = getEngagements();
           <tbody>
             <?php 
               $count = 1;
-              $engagements = getEngagements();
               foreach($engagements as $key => $engagement){
                 echo '<tr>
                   <td>'.$count.'</td>

@@ -182,4 +182,61 @@ LEFT OUTER JOIN ".prefix()."interventionType it ON it.id=i.interventionType
 	return $ret;
 }
 
+function daoCountAll(){
+  dbConnect(getStatus());
+  $ret = array();
+  
+  $req = "SELECT count(*) as nb FROM ".prefix()."intervention;";
+  $result = mysql_query($req);
+  $data = mysql_fetch_array($result, MYSQL_ASSOC);
+  $res = $data['nb'];
+  $ret['interventions'] = $data['nb'];
+  
+  $req = "SELECT count(*) as nb FROM ".prefix()."source;";
+  $result = mysql_query($req);
+  $data = mysql_fetch_array($result, MYSQL_ASSOC);
+  $res = $data['nb'];
+  $ret['sources'] = $data['nb'];
+  
+  $req = "SELECT count(*) as nb FROM ".prefix()."engagement;";
+  $result = mysql_query($req);
+  $data = mysql_fetch_array($result, MYSQL_ASSOC);
+  $res = $data['nb'];
+  $ret['engagements'] = $data['nb'];
+  
+  $req = "SELECT count(*) as nb FROM ".prefix()."interventionHasEngagement;";
+  $result = mysql_query($req);
+  $data = mysql_fetch_array($result, MYSQL_ASSOC);
+  $res = $data['nb'];
+  $ret['interventionEngagements'] = $data['nb'];
+  
+  $ret['citations'] = 0;
+  
+  dbDisconnect();
+	return $ret;
+}
+function daoCountInterventions(){
+	return daoPrivCount("intervention");
+}
+function daoCountSources(){
+	return daoPrivCount("source");
+}
+function daoCountEngagements(){
+	return daoPrivCount("engagement");
+}
+function daoCountInterventionEngagements(){
+	return daoPrivCount("interventionHasEngagement");
+}
+
+// private
+function daoPrivCount($table){
+  dbConnect(getStatus());
+  $req = "SELECT count(*) as nb FROM ".prefix()."".$table.";";
+  $result = mysql_query($req);
+  $data = mysql_fetch_array($result, MYSQL_ASSOC);
+  $res = $data['nb'];
+  dbDisconnect();
+	return $res;
+}
+
 ?>

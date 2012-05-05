@@ -65,6 +65,10 @@ function getEngagementInterventions($_engagementId){
   return null;
 }
 
+function getCounts(){
+  return daoCountAll();
+}
+
 function addIntervention($interventionName, $interventionDate, $interventionTypeId, $sourceName, $sourceLink, $sourceTypeId){
   $interventionId = daoPersistNewIntervention($interventionName, $interventionDate, $interventionTypeId);
   if($interventionId > 0){
