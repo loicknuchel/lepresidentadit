@@ -178,6 +178,36 @@ function addInterventionForm($interventions, $interventionTypes, $sourceTypes, $
   return $form;
 }
 
+function newCitationForm($citationCategories){
+  $form = '<div class="control-group">
+            <label class="control-label" for="citationCategory">Catégorie :</label>
+            <div class="controls">
+              <div class="input-append">
+                '.enumToSelect($citationCategories, 'citationCategory', "Catégorie de la citation").'
+              </div>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="citation">Citation :</label>
+            <div class="controls">
+              <textarea class="input-xlarge" id="citation" name="citation" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="citationPos">Emplacement précis :</label>
+            <div class="controls">
+              <input type="text" id="citationPos" name="citationPos" placeholder="référence" />
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="citationLink">Lien :</label>
+            <div class="controls">
+              <input type="text" id="citationLink" name="citationLink" placeholder="lien" />
+            </div>
+          </div>';
+  return $form;
+}
+
 // private
 function enumToSelect($enums, $name, $default){
   $enumSelect = '<select name="'.$name.'">

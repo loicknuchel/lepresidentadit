@@ -9,6 +9,7 @@ include_once 'server/provider/dataProvider.php';
 
 $res = dispatchRequest($_POST, $_GET, $errorMessage);
 
+$counts = getCounts();
 $interventionTypes = getInterventionTypes();
 $sourceTypes = getSourceTypes();
 $interventions = getInterventions();
@@ -18,10 +19,10 @@ $engagementInterventions = getEngagementInterventions($_GET['engagement']);
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-	<?php echo createHead("Le président à dit..."); ?>
+	<?php echo createHead("Engagement ".$_GET['engagement']." - Le président à dit..."); ?>
 </head>
 <body>
-  <?php echo createHeader("engagements", getCounts()); ?>
+  <?php echo createHeader("engagements", $counts); ?>
 	
   <div class="container">
     <?php
@@ -30,16 +31,17 @@ $engagementInterventions = getEngagementInterventions($_GET['engagement']);
           <button class="close" data-dismiss="alert">&times;</button>
           <strong>Oups!</strong> '.$errorMessage.'
         </div>';
-        /*echo '<pre>';
-        print_r($_POST);
-        echo '</pre>';*/
       }
+      /*echo $errorMessage;
+      echo '<pre>';
+      print_r($_POST);
+      echo '</pre>';*/
     ?>
     <?php 
       if($engagementInterventions != null && $engagementInterventions != ''){ 
     ?>
     
-        <div class="row">
+        <div class="row title">
           <div class="span12">
             <div class="hero-unit">
               <h1><?php echo $engagementInterventions['title']; ?></h1>
@@ -47,9 +49,7 @@ $engagementInterventions = getEngagementInterventions($_GET['engagement']);
             </div>
           </div>
         </div>
-        <br/>
-        <br/>
-        <div class="row">
+        <div class="row datas">
           <div class="span12">
             <h2>Interventions traitant de cet engagement :</h2>
             <?php 
@@ -62,22 +62,22 @@ $engagementInterventions = getEngagementInterventions($_GET['engagement']);
                 echo '<table class="table table-striped">
                   <thead>
                   <tr>
-                    <th>#</th>
-                    <th>type</th>
+                    <th></th>
                     <th>intervention</th>
                     <th>citation exacte</th>
-                    <th>référence exacte</th>
+                    <th>type</th>
+                    <th></th>
                   </tr>
                   </thead>
                   <tbody>';
                   $index = 1;
                   foreach($engagementInterventions['interventions'] as $key => $intervention){
                     echo '<tr>
-                      <td>'.$index.'</td>
-                      <td>'.$intervention['type'].'</td>
+                      <th>'.$index.'</th>
                       <td><span class="js-tooltip" title="le '.$intervention['date'].'">'.$intervention['name'].'</span></td>
-                      <td>'.$intervention['content'].'</td>
-                      <td>'.($intervention['link'] == null || $intervention['link'] == '' ? $intervention['position'] : '<a href="'.$intervention['link'].'">'.$intervention['position'].'</a>').'</td>
+                      <td class="js-tooltip" title="'.$intervention['position'].'">'.($intervention['link'] == null || $intervention['link'] == '' ? $intervention['content'] : '<a href="'.$intervention['link'].'">'.$intervention['content'].'</a>').'</td>
+                      <td class="type">'.$intervention['type'].'</td>
+                      <td><a class="btn" href="intervention.php?intervention='.$intervention['id'].'">=></a></td>
                     </tr>';
                     $index++;
                   }

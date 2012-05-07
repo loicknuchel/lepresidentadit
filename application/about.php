@@ -8,16 +8,16 @@ $counts = getCounts();
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-	<?php echo createHead("Le président à dit"); ?>
+	<?php echo createHead("A propos - Le président à dit"); ?>
 </head>
 <body>
-  <?php echo createHeader("empty", $counts); ?>
+  <?php echo createHeader("about", $counts); ?>
 	
   <div class="container">
   
     <div class="row">
       <div class="span12">
-        <h1>Empty</h1>
+        <h1>A propos</h1>
       </div>
     </div>
     <div class="row">

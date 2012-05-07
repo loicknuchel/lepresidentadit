@@ -17,11 +17,13 @@ function dispatchRequest($_POST, $_GET, &$errorMessage){
     return true;
   } else if(count($POST) == 4 && checkNewSource($POST, $errorMessage)){
     return true;
+  } else if(count($POST) == 5 && checkNewCitationIntervention($POST, $errorMessage)){
+    return true;
   } else if(count($POST) == 6 && checkNewIntervention($POST, $errorMessage)){
     return true;
   } else if(count($POST) == 8 && checkNewEngagementIntervention($POST, $errorMessage)){
     return true;
-  } else if(count($POST) == 11 && checkNewInterventionEngagement($POST, $errorMessage)){
+  } else if(count($POST) == 11 && checkNewInterventionEngagement($POST, $errorMessage) && checkNewCitation($POST, $errorMessage)){
     return true;
   }
   //$errorMessage = 'pas de requetes';
@@ -82,6 +84,30 @@ function checkNewInterventionEngagement($req, &$errorMessage){
   if(isset($req['engagementId']) && isset($req['originalText']) && isset($req['specificLink']) && isset($req['interventionPos']) && isset($req['interventionRef']) && isset($req['intervention']) && isset($req['interventionDate']) && isset($req['interventionType']) && isset($req['sourceName']) && isset($req['sourceLink']) && isset($req['sourceType'])){
     if(is_id($req['engagementId']) && !empty($req['originalText']) && is_url($req['specificLink'], true) && !empty($req['interventionPos']) && (is_id($req['interventionRef']) || (!empty($req['intervention']) && !empty($req['interventionDate']) && is_id($req['interventionType']) && !empty($req['sourceName']) && is_url($req['sourceLink']) && is_id($req['sourceType'])))){
       $errorMessage = addInterventionEngagement($req['engagementId'], $req['originalText'], $req['specificLink'], $req['interventionPos'], $req['interventionRef'], $req['intervention'], $req['interventionDate'], $req['interventionType'], $req['sourceName'], $req['sourceLink'], $req['sourceType']);
+    } else {
+      $errorMessage = "Some datas are incorrect";
+    }
+    return true;
+  }
+  return false;
+}
+
+function checkNewCitation($req, &$errorMessage){
+  if(isset($req['citationCategory']) && isset($req['citation']) && isset($req['citationPos']) && isset($req['citationLink']) && isset($req['interventionRef']) && isset($req['intervention']) && isset($req['interventionDate']) && isset($req['interventionType']) && isset($req['sourceName']) && isset($req['sourceLink']) && isset($req['sourceType'])){
+    if(is_id($req['citationCategory']) && !empty($req['citation']) && !empty($req['citationPos']) && is_url($req['citationLink'], true) && (is_id($req['interventionRef']) || (!empty($req['intervention']) && !empty($req['interventionDate']) && is_id($req['interventionType']) && !empty($req['sourceName']) && is_url($req['sourceLink']) && is_id($req['sourceType'])))){
+      $errorMessage = addCitation($req['citationCategory'], $req['citation'], $req['citationPos'], $req['citationLink'], $req['interventionRef'], $req['intervention'], $req['interventionDate'], $req['interventionType'], $req['sourceName'], $req['sourceLink'], $req['sourceType']);
+    } else {
+      $errorMessage = "Some datas are incorrect";
+    }
+    return true;
+  }
+  return false;
+}
+
+function checkNewCitationIntervention($req, &$errorMessage){
+  if(isset($req['interventionId']) && isset($req['citationCategory']) && isset($req['citation']) && isset($req['citationPos']) && isset($req['citationLink'])){
+    if(is_id($req['interventionId']) && is_id($req['citationCategory']) && !empty($req['citation']) && !empty($req['citationPos']) && is_url($req['citationLink'], true)){
+      $errorMessage = addCitationEngagement($req['interventionId'], $req['citationCategory'], $req['citation'], $req['citationPos'], $req['citationLink']);
     } else {
       $errorMessage = "Some datas are incorrect";
     }

@@ -1,14 +1,45 @@
 
-#top-menu li {
-  position: relative;
+
+.modal form {
+  margin: 0px;
 }
 
-#top-menu .label {
+#top-menu li {
+  position: relative;
+  padding-right: 7px;
+}
+#top-menu li .label {
   position: absolute;
   top: 1px;
-  right: -7px;
+  right: 0px;
   z-index: 1000;
+  display: none;
 }
+#top-menu li:hover .label {
+  display: block;
+}
+
+.row.title {
+
+}
+.row.newElt .button {
+  float: right;
+}
+.row.datas {
+  margin-top: 30px;
+}
+.row.datas table thead tr th {
+  text-transform: uppercase;
+}
+.row.datas table tbody tr td.type {
+  font-style: italic;
+}
+
+
+
+
+
+
 
 .block-sample {
   float: left;
@@ -18,8 +49,4 @@
 
 table.myTable tr th, table.myTable tr td {
   vertical-align: middle !important;
-}
-
-.modal form {
-  margin: 0px;
 }

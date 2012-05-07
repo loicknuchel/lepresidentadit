@@ -42,4 +42,14 @@ function daoPersistNewInterventionEngagement($interventionId, $engagementId, $or
   return $res;
 }
 
+function daoPersistNewCitation($interventionId, $citationCategory, $citation, $citationPos, $citationLink){
+  dbConnect(getStatus());
+  $req = "INSERT INTO `".prefix()."citation` (`intervention`, `citationCategory`, `content`, `citationPos`, `specificLink`) VALUES (".$interventionId.", ".$citationCategory.", ".nullSafe($citation).", ".nullSafe($citationPos).", ".nullSafe($citationLink).");";
+  $persistRes = persistQuery($req);
+  if($persistRes == true){$res = mysql_insert_id();}
+  else{$res = -1;}
+  dbDisconnect();
+  return $res;
+}
+
 ?>

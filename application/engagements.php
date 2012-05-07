@@ -8,6 +8,7 @@ include_once 'server/provider/dataProvider.php';
 
 $res = dispatchRequest($_POST, $_GET, $errorMessage);
 
+$counts = getCounts();
 $interventionTypes = getInterventionTypes();
 $sourceTypes = getSourceTypes();
 $engagementCategories = getEngagementCategory();
@@ -18,10 +19,10 @@ $engagements = getEngagements();
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-	<?php echo createHead("Le président à dit"); ?>
+	<?php echo createHead("Engagements - Le président à dit"); ?>
 </head>
 <body>
-  <?php echo createHeader("engagements", getCounts()); ?>
+  <?php echo createHeader("engagements", $counts); ?>
 	
   <div class="container">
     <?php
@@ -30,29 +31,36 @@ $engagements = getEngagements();
           <button class="close" data-dismiss="alert">&times;</button>
           <strong>Oups!</strong> '.$errorMessage.'
         </div>';
-        /*echo '<pre>';
-        print_r($_POST);
-        echo '</pre>';*/
       }
+      /*echo $errorMessage;
+      echo '<pre>';
+      print_r($_POST);
+      echo '</pre>';*/
     ?>
-    <div class="row">
+   <div class="row title">
       <div class="span12">
         <h1>Engagements</h1>
-        <a data-toggle="modal" href="#modalAddEngagement" class="btn">Nouvel engagement</a>
-        <?php echo newEngagementModal('modalAddEngagement', $engagementCategories); ?>
       </div>
     </div>
-    <br/>
-    <div class="row">
+    <div class="row newElt">
       <div class="span12">
-        <table class="table table-striped myTable">
+        <div class="button">
+          <?php echo newEngagementModal('modalAddEngagement', $engagementCategories); ?>
+          <a data-toggle="modal" href="#modalAddEngagement" class="btn">Nouvel engagement</a>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="row datas">
+      <div class="span12">
+        <table class="table table-striped">
           <thead>
             <tr>
-              <th>#</th>
-              <th>catégorie</th>
+              <th></th>
               <th>titre</th>
               <th>engagement</th>
-              <th></th>
+              <th>interventions</th>
+              <th>catégorie</th>
             </tr>
           </thead>
           <tbody>
@@ -60,18 +68,17 @@ $engagements = getEngagements();
               $count = 1;
               foreach($engagements as $key => $engagement){
                 echo '<tr>
-                  <td>'.$count.'</td>
-                  <td>'.$engagement['category'].'</td>
+                  <th>'.$count.'</th>
                   <td>'.$engagement['title'].'</td>
                   <td>'.$engagement['content'].'</td>
                   <td style="min-width: 162px;">
                     '.newInterventionEngagementModal('modelIntervention'.$engagement['id'], $interventions, $interventionTypes, $sourceTypes, $engagement['id'], $engagement['title']).'
                     <div class="btn-group">
-                      <button class="btn"><a href="engagement-interventions.php?engagement='.$engagement['id'].'">'.($engagement['interventionsNb'] == 0 ? 'aucune intervention' : 'dans '.$engagement['interventionsNb'].' intervention'.($engagement['interventionsNb'] > 1 ? 's' : '')).'</a></button>
+                      <button class="btn"><a href="engagement.php?engagement='.$engagement['id'].'">'.($engagement['interventionsNb'] == 0 ? 'aucune intervention' : 'dans '.$engagement['interventionsNb'].' intervention'.($engagement['interventionsNb'] > 1 ? 's' : '')).'</a></button>
                       <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
                       <ul class="dropdown-menu">'; 
                         foreach($engagement['interventions'] as $interventionKey => $intervention){
-                          echo '<li><a href="intervention-engagements.php?intervention='.$intervention['id'].'" title="'.$intervention['position'].'" class="js-tooltip">'.$intervention['name'].' ('.$intervention['type'].')</a></li>';
+                          echo '<li><a href="intervention.php?intervention='.$intervention['id'].'" title="'.$intervention['position'].'" class="js-tooltip">'.$intervention['name'].' ('.$intervention['type'].')</a></li>';
                         }
                     echo '<li class="divider"></li>
                           <li>
@@ -80,6 +87,7 @@ $engagements = getEngagements();
                       </ul>
                     </div>
                   </td>
+                  <td class="type">'.$engagement['category'].'</td>
                 </tr>';
                 $count++;
               }

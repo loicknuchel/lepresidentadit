@@ -29,8 +29,8 @@ CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_intervention` (
   `name` VARCHAR(45) NOT NULL ,
   `date` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_intervention_interventionType` (`interventionType` ASC) ,
-  CONSTRAINT `fk_intervention_interventionType`
+  INDEX `fk_LPAD_intervention_LPAD_interventionType` (`interventionType` ASC) ,
+  CONSTRAINT `fk_LPAD_intervention_LPAD_interventionType`
     FOREIGN KEY (`interventionType` )
     REFERENCES `lkws_politique`.`LPAD_interventionType` (`id` )
     ON DELETE NO ACTION
@@ -62,8 +62,8 @@ CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_engagement` (
   `title` VARCHAR(256) NOT NULL ,
   `content` TEXT NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_proposition_propositionCategory` (`engagementCategory` ASC) ,
-  CONSTRAINT `fk_proposition_propositionCategory`
+  INDEX `fk_LPAD_engagement_LPAD_engagementCategory` (`engagementCategory` ASC) ,
+  CONSTRAINT `fk_LPAD_engagement_LPAD_engagementCategory`
     FOREIGN KEY (`engagementCategory` )
     REFERENCES `lkws_politique`.`LPAD_engagementCategory` (`id` )
     ON DELETE NO ACTION
@@ -122,6 +122,7 @@ CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_source` (
   `sourceType` INT NULL ,
   `title` VARCHAR(45) NOT NULL ,
   `link` TEXT NOT NULL ,
+  `ordre` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_source_intervention` (`intervention` ASC) ,
   INDEX `fk_source_sourceType` (`sourceType` ASC) ,
@@ -161,6 +162,8 @@ CREATE  TABLE IF NOT EXISTS `lkws_politique`.`LPAD_citation` (
   `intervention` INT NOT NULL ,
   `citationCategory` INT NULL ,
   `content` TEXT NOT NULL ,
+  `citationPos` VARCHAR(45) NULL ,
+  `specificLink` TEXT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_LPAD_citation_LPAD_citationCategory` (`citationCategory` ASC) ,
   INDEX `fk_LPAD_citation_LPAD_intervention` (`intervention` ASC) ,
@@ -182,9 +185,10 @@ USE `lkws_politique`;
 -- Data for table `lkws_politique`.`LPAD_intervention`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO `LPAD_intervention` (`id`, `interventionType`, `name`, `date`) VALUES (1, 2, 'Des paroles et des actes', '2012-04-10 20:00:00');
-INSERT INTO `LPAD_intervention` (`id`, `interventionType`, `name`, `date`) VALUES (2, 1, 'Soir du premier tour', '2012-04-22 20:00:00');
-INSERT INTO `LPAD_intervention` (`id`, `interventionType`, `name`, `date`) VALUES (3, 3, 'Premier meeting', '2012-03-29 18:30:00');
+INSERT INTO `LPAD_intervention` (`id`, `interventionType`, `name`, `date`) VALUES (1, 2, 'Des paroles et des actes', '2012-05-01 00:00:00');
+INSERT INTO `LPAD_intervention` (`id`, `interventionType`, `name`, `date`) VALUES (2, 1, 'Soir du premier tour', '2012-05-02 00:00:00');
+INSERT INTO `LPAD_intervention` (`id`, `interventionType`, `name`, `date`) VALUES (3, 3, 'Premier meeting', '2012-05-03 00:00:00');
+INSERT INTO `LPAD_intervention` (`id`, `interventionType`, `name`, `date`) VALUES (4, 5, 'Medias', '2012-05-04 00:00:00');
 
 COMMIT;
 
@@ -192,12 +196,12 @@ COMMIT;
 -- Data for table `lkws_politique`.`LPAD_interventionType`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (1, 'Interview télévisée', );
-INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (2, 'Meeting', );
-INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (3, 'Programme officel', );
-INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (4, 'tract', );
-INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (5, 'twitter officiel', );
-INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (6, 'débat', );
+INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (1, 'Interview télévisée', 1);
+INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (2, 'Meeting', 2);
+INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (3, 'Programme officel', 3);
+INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (4, 'tract', 4);
+INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (5, 'twitter officiel', 5);
+INSERT INTO `LPAD_interventionType` (`id`, `name`, `ordre`) VALUES (6, 'débat', 6);
 
 COMMIT;
 
@@ -205,8 +209,8 @@ COMMIT;
 -- Data for table `lkws_politique`.`LPAD_engagement`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO `LPAD_engagement` (`id`, `engagementCategory`, `title`, `content`) VALUES (1, 4, 'Droit à l\'avortement', 'C\'est vrai quoi...');
-INSERT INTO `LPAD_engagement` (`id`, `engagementCategory`, `title`, `content`) VALUES (2, 2, 'réformer les institutions', 'Ces institutions sont anti-démocratiques. Il est temps de les changer !');
+INSERT INTO `LPAD_engagement` (`id`, `engagementCategory`, `title`, `content`) VALUES (1, 4, 'Droit à l\'avortement', 'C\'est nécessaire pour moi !');
+INSERT INTO `LPAD_engagement` (`id`, `engagementCategory`, `title`, `content`) VALUES (2, 2, 'réformer les institutions', 'Parce qu\'elle ne nous représentent plus !');
 
 COMMIT;
 
@@ -242,10 +246,13 @@ COMMIT;
 -- Data for table `lkws_politique`.`LPAD_source`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`) VALUES (1, 1, 2, 'dailymotion', 'http://twitter.github.com/bootstrap/javascript.html#modals');
-INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`) VALUES (2, 1, 4, 'france 2', 'https://github.com/loicknuchel/lepresidentadit');
-INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`) VALUES (3, 2, 1, 'youtube', 'http://www.youtube.com/user/PomfEtThud');
-INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`) VALUES (4, 3, 3, 'test', 'https://twitter.com/#!/');
+INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`, `ordre`) VALUES (1, 1, 2, 'dailymotion', 'http://twitter.github.com/bootstrap/javascript.html#modals', 1);
+INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`, `ordre`) VALUES (2, 1, 4, 'france 2', 'https://github.com/loicknuchel/lepresidentadit', 2);
+INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`, `ordre`) VALUES (3, 2, 1, 'youtube', 'http://www.youtube.com/user/PomfEtThud', 1);
+INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`, `ordre`) VALUES (4, 3, 3, 'test', 'https://twitter.com/#!/', 1);
+INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`, `ordre`) VALUES (5, 4, 2, 'Sarko -3m', 'http://www.dailymotion.com/video/xqjth0_le-debat-hollande-sarkozy-en-moins-de-3-minutes_news', 1);
+INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`, `ordre`) VALUES (6, 4, 1, 'débat', 'http://www.youtube.com/watch?v=veWXj88VvZM', 2);
+INSERT INTO `LPAD_source` (`id`, `intervention`, `sourceType`, `title`, `link`, `ordre`) VALUES (7, 4, 7, 'photo', 'http://cache.20minutes.fr/img/photos/20mn/2012-05/2012-05-03/article_hollande-crop.jpg', 3);
 
 COMMIT;
 
@@ -253,13 +260,31 @@ COMMIT;
 -- Data for table `lkws_politique`.`LPAD_sourceType`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (1, 'YouTube', );
-INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (2, 'DailyMotion', );
-INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (3, 'Autre vidéo', );
-INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (4, 'Site de campagne', );
-INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (5, 'Article', );
-INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (6, 'Tract', );
-INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (7, 'Image', );
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (1, 'YouTube', 1);
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (2, 'DailyMotion', 2);
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (3, 'Autre vidéo', 3);
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (4, 'Site de campagne', 4);
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (5, 'Article', 5);
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (6, 'Tract', 6);
+INSERT INTO `LPAD_sourceType` (`id`, `name`, `ordre`) VALUES (7, 'Image', 7);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `lkws_politique`.`LPAD_citation`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+INSERT INTO `LPAD_citation` (`id`, `intervention`, `citationCategory`, `content`, `citationPos`, `specificLink`) VALUES (1, 3, 2, 'trop top ce meeting', 'milieu', NULL);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `lkws_politique`.`LPAD_citationCategory`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+INSERT INTO `LPAD_citationCategory` (`id`, `name`, `ordre`) VALUES (1, 'attaque candidat', 1);
+INSERT INTO `LPAD_citationCategory` (`id`, `name`, `ordre`) VALUES (2, 'stupidités', 2);
+INSERT INTO `LPAD_citationCategory` (`id`, `name`, `ordre`) VALUES (3, 'propositions', 3);
 
 COMMIT;
 

@@ -1,3 +1,8 @@
+<?php 
+	header('Location: interventions.php');
+	exit();
+?>
+
 <?php
 include_once 'inc/head.php';
 include_once 'inc/header.php';

@@ -8,8 +8,10 @@ include_once 'server/provider/dataProvider.php';
 
 $res = dispatchRequest($_POST, $_GET, $errorMessage);
 
+$counts = getCounts();
 $sourceTypes = getSourceTypes();
 $engagementCategories = getEngagementCategory();
+$citationCategories = getCitationCategory();
 $interventionTypes = getInterventionTypes();
 $interventions = getInterventions();
 $engagements = getEngagements();
@@ -18,10 +20,10 @@ $engagements = getEngagements();
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-	<?php echo createHead("Le président à dit..."); ?>
+	<?php echo createHead("Interventions - Le président à dit..."); ?>
 </head>
 <body>
-  <?php echo createHeader("interventions", getCounts()); ?>
+  <?php echo createHeader("interventions", $counts); ?>
 	
   <div class="container">
     <?php
@@ -30,30 +32,38 @@ $engagements = getEngagements();
           <button class="close" data-dismiss="alert">&times;</button>
           <strong>Oups!</strong> '.$errorMessage.'
         </div>';
-        /*echo '<pre>';
-        print_r($_POST);
-        echo '</pre>';*/
       }
+      /*echo $errorMessage;
+      echo '<pre>';
+      print_r($_POST);
+      echo '</pre>';*/
     ?>
-    <div class="row">
+    <div class="row title">
       <div class="span12">
         <h1>Interventions</h1>
-        <a data-toggle="modal" href="#modalAddIntervention" class="btn">Nouvelle intervention</a>
-        <?php echo newInterventionModal('modalAddIntervention', $interventionTypes, $sourceTypes); ?>
       </div>
     </div>
-    <br/>
-    <div class="row">
+    <div class="row newElt">
       <div class="span12">
-        <table class="table table-striped myTable">
+        <div class="button">
+          <?php echo newInterventionModal('modalAddIntervention', $interventionTypes, $sourceTypes); ?>
+          <a data-toggle="modal" href="#modalAddIntervention" class="btn">Nouvelle intervention</a>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="row datas">
+      <div class="span12">
+        <table class="table table-striped">
           <thead>
             <tr>
-              <th>#</th>
-              <th>type</th>
+              <th></th>
               <th>intervention</th>
-              <th>date</th>
-              <th></th>
-              <th></th>
+              <th>sources</th>
+              <th>engagements</th>
+              <th>citations</th>
+              <th>type</th>
+              <!--<th>date</th>-->
             </tr>
           </thead>
           <tbody>
@@ -61,38 +71,36 @@ $engagements = getEngagements();
               $count = 1;
               foreach($interventions as $key => $intervention){
                 echo '<tr>
-                  <td>'.$count.'</td>
-                  <td>'.$intervention['type'].'</td>
+                  <th>'.$count.'</th>
                   <td><span class="js-tooltip" title="'.$intervention['type'].' du '.$intervention['date'].'">'.$intervention['name'].'</span></td>
-                  <td>'.$intervention['date'].' à '.$intervention['heure'].'</td>
                   <td>
                     '.newSourceModal('modalSource'.$intervention['id'], $sourceTypes, $intervention['id'], $intervention['name']).'
                     <div class="btn-group">
                       <button class="btn" data-toggle="dropdown">'.($intervention['sourcesNb'] == 0 ? "Pas de sources" : $intervention['sourcesNb'].' source'.($intervention['sourcesNb'] > 1 ? 's' : '')).'</button>
-                      <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                      <button class="btn dropdown-toggle" data-toggle="modal" href="#modalSource'.$intervention['id'].'"><i class="icon-plus"></i></button>
                       <ul class="dropdown-menu">'; 
                         foreach($intervention['sources'] as $sourceKey => $source){
                           echo '<li><a href="'.$source['link'].'">'.$source['name'].' ('.$source['type'].')</a></li>';
                         }
-                    echo '<li class="divider"></li>
-                          <li>
-                            <a data-toggle="modal" href="#modalSource'.$intervention['id'].'"><i class="icon-plus"></i> Nouvelle source</a>
-                           </li>
-                      </ul>
+                      echo '</ul>
                     </div>
                   </td>
                   <td>
                     '.newEngagementInterventionModal('modalEngagement'.$intervention['id'], $engagements, $engagementCategories, $intervention['id'], $intervention['name']).'
                     <div class="btn-group">
-                      <button class="btn"><a href="intervention-engagements.php?intervention='.$intervention['id'].'">'.($intervention['engagementsNb'] == 0 ? "Pas d'engagements" : $intervention['engagementsNb'].' engagement'.($intervention['engagementsNb'] > 1 ? 's' : '')).'</a></button>
-                      <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-                      <ul class="dropdown-menu">
-                        '.($intervention['engagementsNb'] > 0 ? '<li><a href="intervention-engagements.php?intervention='.$intervention['id'].'">Voir les engagements</a></li>' : '').'
-                        <li class="divider"></li>
-                        <li><a data-toggle="modal" href="#modalEngagement'.$intervention['id'].'"><i class="icon-plus"></i> Nouvel engagement</a></li>
-                      </ul>
+                      <button class="btn"><a href="intervention.php?intervention='.$intervention['id'].'">'.($intervention['engagementsNb'] == 0 ? "Pas d'engagements" : $intervention['engagementsNb'].' engagement'.($intervention['engagementsNb'] > 1 ? 's' : '')).'</a></button>
+                      <button class="btn dropdown-toggle" data-toggle="modal" href="#modalEngagement'.$intervention['id'].'"><i class="icon-plus"></i></button>
                     </div>
                   </td>
+                  <td>
+                    '.addCitationModal('modalAddCitation'.$intervention['id'], $citationCategories, $intervention['id'], $intervention['name']).'
+                    <div class="btn-group">
+                      <button class="btn"><a href="intervention.php?intervention='.$intervention['id'].'">'.($intervention['citationNb'] == 0 ? "Pas de citations" : $intervention['citationNb'].' citation'.($intervention['citationNb'] > 1 ? 's' : '')).'</a></button>
+                      <button class="btn dropdown-toggle" data-toggle="modal" href="#modalAddCitation'.$intervention['id'].'"><i class="icon-plus"></i></button>
+                    </div>
+                  </td>
+                  <td class="type">'.$intervention['type'].'</td>
+                  <!--<td>'.$intervention['date'].' à '.$intervention['heure'].'</td>-->
                 </tr>';
                 $count++;
               }
