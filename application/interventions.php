@@ -77,7 +77,7 @@ $engagements = getEngagements();
                     '.newSourceModal('modalSource'.$intervention['id'], $sourceTypes, $intervention['id'], $intervention['name']).'
                     <div class="btn-group">
                       <button class="btn" data-toggle="dropdown">'.($intervention['sourcesNb'] == 0 ? "Pas de sources" : $intervention['sourcesNb'].' source'.($intervention['sourcesNb'] > 1 ? 's' : '')).'</button>
-                      <button class="btn dropdown-toggle" data-toggle="modal" href="#modalSource'.$intervention['id'].'"><i class="icon-plus"></i></button>
+                      <button class="btn dropdown-toggle" data-toggle="modal" href="#modalSource'.$intervention['id'].'"><i class="icon-plus icon-gray"></i></button>
                       <ul class="dropdown-menu">'; 
                         foreach($intervention['sources'] as $sourceKey => $source){
                           echo '<li><a href="'.$source['link'].'">'.$source['name'].' ('.$source['type'].')</a></li>';
@@ -89,14 +89,14 @@ $engagements = getEngagements();
                     '.newEngagementInterventionModal('modalEngagement'.$intervention['id'], $engagements, $engagementCategories, $intervention['id'], $intervention['name']).'
                     <div class="btn-group">
                       <button class="btn"><a href="intervention.php?intervention='.$intervention['id'].'">'.($intervention['engagementsNb'] == 0 ? "Pas d'engagements" : $intervention['engagementsNb'].' engagement'.($intervention['engagementsNb'] > 1 ? 's' : '')).'</a></button>
-                      <button class="btn dropdown-toggle" data-toggle="modal" href="#modalEngagement'.$intervention['id'].'"><i class="icon-plus"></i></button>
+                      <button class="btn dropdown-toggle" data-toggle="modal" href="#modalEngagement'.$intervention['id'].'"><i class="icon-plus icon-gray"></i></button>
                     </div>
                   </td>
                   <td>
                     '.addCitationModal('modalAddCitation'.$intervention['id'], $citationCategories, $intervention['id'], $intervention['name']).'
                     <div class="btn-group">
                       <button class="btn"><a href="intervention.php?intervention='.$intervention['id'].'">'.($intervention['citationNb'] == 0 ? "Pas de citations" : $intervention['citationNb'].' citation'.($intervention['citationNb'] > 1 ? 's' : '')).'</a></button>
-                      <button class="btn dropdown-toggle" data-toggle="modal" href="#modalAddCitation'.$intervention['id'].'"><i class="icon-plus"></i></button>
+                      <button class="btn dropdown-toggle" data-toggle="modal" href="#modalAddCitation'.$intervention['id'].'"><i class="icon-plus icon-gray"></i></button>
                     </div>
                   </td>
                   <td class="type">'.$intervention['type'].'</td>

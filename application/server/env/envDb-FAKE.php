@@ -1,5 +1,7 @@
 <?php
 
+function getStatus(){ return "LOCAL"; }
+
 function setDbVars($status){
 	$ret = "";
 	if($status == "LOCAL"){

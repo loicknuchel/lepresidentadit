@@ -23,7 +23,7 @@ function dispatchRequest($_POST, $_GET, &$errorMessage){
     return true;
   } else if(count($POST) == 8 && checkNewEngagementIntervention($POST, $errorMessage)){
     return true;
-  } else if(count($POST) == 11 && checkNewInterventionEngagement($POST, $errorMessage) && checkNewCitation($POST, $errorMessage)){
+  } else if(count($POST) == 11 && (checkNewInterventionEngagement($POST, $errorMessage) || checkNewCitation($POST, $errorMessage))){
     return true;
   }
   //$errorMessage = 'pas de requetes';

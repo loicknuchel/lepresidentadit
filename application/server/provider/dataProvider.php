@@ -4,8 +4,6 @@ include_once 'server/utils/stringUtils.php';
 include_once 'server/dao/persistDao.php';
 include_once 'server/dao/retrieveDao.php';
 
-function getStatus(){ return "LOCAL"; }
-
 function getSourceTypes(){
   return daoGetSourceTypes();
 }
